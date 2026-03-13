@@ -80,7 +80,7 @@ public abstract class Gui {
 
     public void update(double dt) {
         if (this.background == null || !this.background.equals(Wrapper.getLevelManager().getCurrent())) {
-            this.background = Wrapper.getLevelManager().getCurrent().getLoader().getColors().accent();
+            this.background = Wrapper.getLevelManager().getCurrent().getTheme().accent();
         }
 
         this.elements.forEach(it -> it.update(dt));

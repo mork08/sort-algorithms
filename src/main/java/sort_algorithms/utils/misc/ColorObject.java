@@ -100,7 +100,7 @@ public class ColorObject extends Color {
      * @param to   Zielfarbe
      * @param t    0.0 -> from, 1.0 -> to
      */
-    public Color lerp(Color from, Color to, double t) {
+    public ColorObject lerp(Color from, Color to, double t) {
         t = Math.clamp(0.0, 1.0, t);
 
         int r = (int) (from.getRed()   + (to.getRed()   - from.getRed())   * t);
@@ -108,6 +108,6 @@ public class ColorObject extends Color {
         int b = (int) (from.getBlue()  + (to.getBlue()  - from.getBlue())  * t);
         int a = (int) (from.getAlpha() + (to.getAlpha() - from.getAlpha()) * t);
 
-        return new Color(r, g, b, a);
+        return new ColorObject(r, g, b, a);
     }
 }

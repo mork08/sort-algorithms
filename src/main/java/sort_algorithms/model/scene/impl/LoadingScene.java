@@ -16,9 +16,11 @@ public class LoadingScene extends Scene {
     private double elapsed = 0;
     private double duration = 5;
     private boolean loadingComplete = false;
+    private Font titleFont;
 
     public LoadingScene() {
         super("loading");
+        this.titleFont = Wrapper.getCacheManager().loadFont(FontType.PIXEL_FONT, 100);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class LoadingScene extends Scene {
 
         // Titel (zentriert)
         drawTool.setCurrentColor(ThemeColor.getTextColor());
-        drawTool.getGraphics2D().setFont(Wrapper.getCacheManager().loadFont(FontType.PIXEL_FONT, 100));
+        drawTool.getGraphics2D().setFont(this.titleFont);
         String title = "DÜBEL LEVEL";
 
         drawTool.drawCenteredText("DÜBEL".toUpperCase(), 0, -130, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);

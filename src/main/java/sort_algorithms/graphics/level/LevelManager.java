@@ -4,14 +4,22 @@ import KAGO_framework.model.abitur.datenstrukturen.Queue;
 import KAGO_framework.view.DrawTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sort_algorithms.graphics.map.TileMap;
 import sort_algorithms.model.scene.Scene;
 import sort_algorithms.model.scene.impl.GameScene;
 import sort_algorithms.model.transitions.DefaultTransition;
 import sort_algorithms.model.transitions.Transition;
 
-import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.JarURLConnection;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /***
  * @author Mark
@@ -23,26 +31,91 @@ public class LevelManager {
     public Queue<LevelSwitch> levelSwitchQueue;
     private LevelSwitch transition;
 
-    private HashMap<Integer, LevelMap> cache;
+    private List<Level> levels;
 
-    private LevelMap previous;
-    private LevelMap current;
-    private LevelMap next;
+    private Level previous;
+    private Level current;
+    private Level next;
 
     private int index;
 
     /**
      * Erstellt den LevelManager und setzt Startlevel sowie Stats-Level als nächstes.
-     *
-     * @param levelStart Start-Levelindex
      */
-    public LevelManager(int levelStart) {
-        this.cache = new HashMap<>();
-        this.index = levelStart;
+    public LevelManager() {
+        this.levels = new ArrayList<>();
         this.levelSwitchQueue = new Queue<>();
         this.previous = null;
-        this.current = this.cache.getOrDefault(this.index, this.getMapByIndex(this.index));
-        this.next = this.cache.getOrDefault(this.index + 1, this.getMapByIndex(this.index + 1));
+
+        try {
+            String packageName = String.format("%s.impl", Level.class.getPackageName());
+            String packagePath = packageName.replace('.', '/');
+
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            Enumeration<URL> resources = classLoader.getResources(packagePath);
+
+            while (resources.hasMoreElements()) {
+                URL resource = resources.nextElement();
+                String protocol = resource.getProtocol();
+
+                if (protocol.equals("file")) {
+                    // IDE / classes directory
+                    File directory = new File(resource.toURI());
+                    if (!directory.exists()) continue;
+
+                    File[] files = directory.listFiles((dir, name) -> name.endsWith(".class"));
+                    if (files == null) continue;
+
+                    for (File file : files) {
+                        String className = file.getName().substring(0, file.getName().length() - 6);
+                        String fullName = packageName + "." + className;
+                        this.levels.add((Level) Class.forName(fullName).getConstructor().newInstance());
+                    }
+
+                } else if (protocol.equals("jar")) {
+                    JarURLConnection conn = (JarURLConnection) resource.openConnection();
+                    try (JarFile jar = conn.getJarFile()) {
+                        Enumeration<JarEntry> entries = jar.entries();
+
+                        while (entries.hasMoreElements()) {
+                            JarEntry entry = entries.nextElement();
+                            String name = entry.getName();
+
+                            // Nur Klassen direkt in diesem Package (nicht in Subpackages)
+                            if (!name.startsWith(packagePath + "/")) continue;
+                            if (entry.isDirectory()) continue;
+                            if (!name.endsWith(".class")) continue;
+
+                            String simple = name.substring(name.lastIndexOf('/') + 1);
+
+                            // Nur direkte Kinder: packagePath/XYZ.class
+                            String remainder = name.substring((packagePath + "/").length());
+                            if (remainder.contains("/")) continue;
+
+                            String className = simple.substring(0, simple.length() - 6);
+                            String fullName = packageName + "." + className;
+
+                            this.levels.add((Level) Class.forName(fullName).getConstructor().newInstance());
+                        }
+                    }
+
+                } else {
+                    log.error("Error during filtering for level files (unknown protocol): {}", protocol);
+                }
+            }
+
+            if (this.levels.size() > 0) {
+                this.current = this.levels.getFirst();
+            }
+
+            if (this.levels.size() > 1) {
+                this.next = this.levels.get(1);
+            }
+
+        } catch (IOException | ClassNotFoundException | URISyntaxException | NoSuchMethodException |
+                 InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     /** Aktiviert das Startlevel (Loader-Callback). */
@@ -62,13 +135,13 @@ public class LevelManager {
     }
 
     /**
-     * Zeichnet Inhalte, die nach dem Player gerendert werden sollen.
+     * Zeichnet Inhalte, die nach den Objekten gerendert werden sollen.
      *
      * @param drawTool DrawTool
      */
-    public void drawAfterPlayer(DrawTool drawTool) {
+    public void drawAfterObjects(DrawTool drawTool) {
         if (this.current != null) {
-            this.current.drawAfterPlayer(drawTool);
+            this.current.drawAfterObjects(drawTool);
         }
     }
 
@@ -83,8 +156,8 @@ public class LevelManager {
         }
 
         if (this.transition != null) {
-            LevelMap last = this.transition.last();
-            LevelMap next = this.transition.next();
+            Level last = this.transition.last();
+            Level next = this.transition.next();
             Transition tr = this.transition.transition();
 
             if (tr.swap()) {
@@ -122,27 +195,6 @@ public class LevelManager {
     }
 
     /**
-     * Lädt eine LevelMap anhand des Index, sofern die Map-Datei existiert.
-     * Versucht zusätzlich den passenden LevelLoader zu finden.
-     *
-     * @param index Levelindex
-     * @return LevelMap oder null
-     */
-    private LevelMap getMapByIndex(int index) {
-        String pathNext = String.format("/levels/%d/level%d.json", index, index);
-        if (TileMap.mapExists(pathNext)) {
-            Class<LevelLoader> loader = LevelLoader.getLoaderByIndex(index);
-            if (loader != null) {
-                return new LevelMap(pathNext, loader, List.of(), List.of(), List.of("*"), List.of());
-
-            } else {
-                return new LevelMap(pathNext, null, List.of(), List.of(), List.of("*"), List.of());
-            }
-        }
-        return null;
-    }
-
-    /**
      * Startet (oder queued) einen Levelwechsel mit Richtung und Transition.
      *
      * @param id eindeutige Wechsel-ID (z.B. Event-Quelle)
@@ -151,7 +203,7 @@ public class LevelManager {
      * @param runWhileTransition optionaler Code, der beim Swap ausgeführt wird
      * @param transition Transition-Implementierung
      */
-    private void initiateNewLevel(String id, LevelSwitch.LevelSwitchDirection direction, LevelMap level, Runnable runWhileTransition, Transition transition) {
+    private void initiateNewLevel(String id, LevelSwitch.LevelSwitchDirection direction, Level level, Runnable runWhileTransition, Transition transition) {
         if (level == null) {
             log.warn("Cancelled level change because level is null");
             return;
@@ -241,13 +293,13 @@ public class LevelManager {
     private void setNextLevel() {
         this.previous = this.current;
         if (this.next != null) {
-            this.next.getLoader().resetLevel();
+            this.next.onReset();
         }
         this.current.onHide();
         this.current = this.next;
         this.current.onActive();
         this.index++;
-        this.next = this.cache.getOrDefault(this.index + 1, this.getMapByIndex(this.index + 1));
+        this.next = this.levels.get(this.index + 1);
     }
 
     /**
@@ -258,15 +310,15 @@ public class LevelManager {
 
         this.next = this.current;
 
-        this.previous.getLoader().resetLevel();
+        this.previous.onReset();
         this.current.onHide();
 
         this.current = this.previous;
         this.current.onActive();
 
-        if (this.index > 1) {
+        if (this.index > 0) {
             this.index--;
-            this.previous = this.cache.getOrDefault(this.index - 1, this.getMapByIndex(this.index - 1));
+            this.previous = this.levels.get(this.index);
 
         } else {
             this.previous = null;
@@ -285,21 +337,21 @@ public class LevelManager {
     /**
      * @return vorheriges Level
      */
-    public LevelMap getPrevious() {
+    public Level getPrevious() {
         return this.previous;
     }
 
     /**
      * @return aktuelles Level
      */
-    public LevelMap getCurrent() {
+    public Level getCurrent() {
         return this.current;
     }
 
     /**
      * @return nächstes Level
      */
-    public LevelMap getNext() {
+    public Level getNext() {
         return this.next;
     }
 

@@ -85,7 +85,7 @@ public class GameScene extends Scene {
 
         this.drawAllHitboxes(drawTool);
 
-        Wrapper.getLevelManager().drawAfterPlayer(drawTool);
+        Wrapper.getLevelManager().drawAfterObjects(drawTool);
 
         this.cameraRenderer.detach(drawTool);
     }

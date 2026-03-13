@@ -90,7 +90,8 @@ public class CacheManager {
                                 this.log.error("Font {} does not exist", fontType.getName());
                                 return null;
                             }
-                            return Font.createFont(Font.TRUETYPE_FONT, stream);
+                            Font font = Font.createFont(Font.TRUETYPE_FONT, stream);
+                            return font.deriveFont((float) size);
                         } catch (IOException | FontFormatException e) {
                             throw new RuntimeException(e);
                         }

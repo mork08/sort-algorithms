@@ -19,7 +19,7 @@ public class Wrapper {
     private final static SoundConstants soundConstants = new SoundConstants();
     private final static TimerUtils timer = new TimerUtils();
     private final static CacheManager cacheManager = new CacheManager();
-    private final static LevelManager levelManager = new LevelManager(1);
+    private final static LevelManager levelManager = new LevelManager();
 
     public static EventManager getEventManager() {
         return eventManager;
