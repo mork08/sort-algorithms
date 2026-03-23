@@ -9,6 +9,8 @@ import sort_algorithms.model.scene.impl.GameScene;
 import sort_algorithms.model.transitions.DefaultTransition;
 import sort_algorithms.model.transitions.Transition;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -142,6 +144,12 @@ public class LevelManager {
     public void drawAfterObjects(DrawTool drawTool) {
         if (this.current != null) {
             this.current.drawAfterObjects(drawTool);
+        }
+    }
+
+    public void drawHUD(DrawTool drawTool) {
+        if (this.current != null) {
+            this.current.drawHUD(drawTool);
         }
     }
 
@@ -360,5 +368,45 @@ public class LevelManager {
      */
     public int getIndex() {
         return this.index;
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseEntered(e));
+    }
+
+    public void mouseExited(MouseEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseExited(e));
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseReleased(e));
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseClicked(e));
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseDragged(e));
+    }
+
+    public void mouseMoved(MouseEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseMoved(e));
+    }
+
+    public void mousePressed(MouseEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.mousePressed(e));
+    }
+
+    public void keyTyped(KeyEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.keyTyped(e));
+    }
+
+    public void keyPressed(KeyEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.keyPressed(e));
+    }
+
+    public void keyReleased(KeyEvent e) {
+        if (this.current != null) this.current.elements.forEach(it -> it.keyReleased(e));
     }
 }

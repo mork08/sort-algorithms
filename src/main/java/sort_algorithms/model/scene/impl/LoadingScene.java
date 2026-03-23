@@ -3,7 +3,6 @@ package sort_algorithms.model.scene.impl;
 import KAGO_framework.view.DrawTool;
 import sort_algorithms.Config;
 import sort_algorithms.Wrapper;
-import sort_algorithms.graphics.ThemeColor;
 import sort_algorithms.model.scene.Scene;
 import sort_algorithms.model.transitions.DefaultTransition;
 import sort_algorithms.utils.misc.FontType;
@@ -14,7 +13,7 @@ public class LoadingScene extends Scene {
 
     private double loadingProgress = 0;
     private double elapsed = 0;
-    private double duration = 5;
+    private double duration = 2;
     private boolean loadingComplete = false;
     private Font titleFont;
 
@@ -37,16 +36,16 @@ public class LoadingScene extends Scene {
     @Override
     public void draw(DrawTool drawTool) {
         // Hintergrund
-        drawTool.setCurrentColor(new Color(238, 195, 154));
+        drawTool.setCurrentColor(new Color(117, 206, 94));
         drawTool.drawFilledRectangle(0, 0, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
 
         // Titel (zentriert)
-        drawTool.setCurrentColor(ThemeColor.getTextColor());
+        drawTool.setCurrentColor(new Color(56, 89, 8));
         drawTool.getGraphics2D().setFont(this.titleFont);
-        String title = "DÜBEL LEVEL";
+        String title = "Sorting Algorithms";
 
-        drawTool.drawCenteredText("DÜBEL".toUpperCase(), 0, -130, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
-        drawTool.drawCenteredText("LEVEL".toUpperCase(), 0, -50, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+        drawTool.drawCenteredText("Sorting".toUpperCase(), 0, -130, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+        drawTool.drawCenteredText("Algorithms".toUpperCase(), 0, -50, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
 
         // Ladebalken
         int barWidth = 400;
@@ -56,11 +55,11 @@ public class LoadingScene extends Scene {
         int progressWidth = (int) (loadingProgress * barWidth);
 
         // Balkenhintergrund
-        drawTool.setCurrentColor(Color.DARK_GRAY);
+        drawTool.setCurrentColor(new Color(81, 107, 84));
         drawTool.drawFilledRectangle(barX, barY, barWidth, barHeight);
 
         // Ladefortschritt
-        drawTool.setCurrentColor(Color.ORANGE);
+        drawTool.setCurrentColor(new Color(87, 245, 77));
         drawTool.drawFilledRectangle(barX, barY, progressWidth, barHeight);
 
         // Prozentanzeige
