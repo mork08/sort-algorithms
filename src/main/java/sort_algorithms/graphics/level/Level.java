@@ -2,8 +2,6 @@ package sort_algorithms.graphics.level;
 
 
 import KAGO_framework.view.DrawTool;
-import sort_algorithms.Config;
-import sort_algorithms.Wrapper;
 import sort_algorithms.graphics.ThemeColor;
 import sort_algorithms.graphics.array.ArrayRepresentation;
 import sort_algorithms.graphics.level.interaction.LevelInteractionElement;
@@ -11,7 +9,12 @@ import sort_algorithms.graphics.level.interaction.impl.LevelButton;
 import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.utils.misc.ColorObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Level {
+
+    protected List<LevelInteractionElement<?>> elements = new ArrayList<>();
 
     protected String name;
     protected ThemeColor theme;
@@ -19,8 +22,7 @@ public abstract class Level {
     protected SorterHistory sorterHistory;
     protected int[] array;
     protected boolean autoPlay;
-    private LevelButton btn;
-
+    private LevelButton pauseBtn;
 
     /***
      * "Erstellt" quasi das Level, wird in der ganzen Runtime nur einmal ausgeführt
@@ -34,9 +36,8 @@ public abstract class Level {
         visualArray = new ArrayRepresentation(array, 0, 250, 600, 400, (ColorObject) this.theme.accent());
         sorterHistory = sort(array);
         autoPlay = false;
-        this.btn = new LevelButton("TEST", 100, 100, 200, 50, 20);
-        this.btn.onClick((t) -> this.autoPlay = !this.autoPlay);
-
+        this.pauseBtn = new LevelButton(this, "TEST", 100, 100, 200, 50, 20);
+        this.pauseBtn.onClick((t) -> this.autoPlay = !this.autoPlay);
     }
 
     /***
@@ -57,20 +58,13 @@ public abstract class Level {
 
     public abstract void update(double dt);
     public abstract void draw(DrawTool drawTool);
-    public void drawAfterObjects(DrawTool drawTool) {}
-    public void drawHUD(DrawTool drawTool) {
-        LevelInteractionElement.elements.forEach(element -> element.draw(drawTool));
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public ThemeColor getTheme() {
-        return this.theme;
-    }
-
     protected abstract SorterHistory sort(int[] array);
+    public void drawAfterObjects(DrawTool drawTool) {}
+
+    public void drawHUD(DrawTool drawTool) {
+        this.elements.forEach(element -> element.draw(drawTool));
+    }
+
     protected int[] generateArray(int min, int max) {
         int[] array = new int[max - min + 1];
         for (int i = 0; i < array.length; i++) {
@@ -79,6 +73,7 @@ public abstract class Level {
         }
         return array;
     }
+
     protected void scramble(int[] array) {
         for (int i = 0; i < 1000; i++) {
             int index1 = (int) (Math.random() * (array.length));
@@ -89,4 +84,15 @@ public abstract class Level {
         }
     }
 
+    public void registerElement(LevelInteractionElement<?> element) {
+        this.elements.add(element);
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public ThemeColor getTheme() {
+        return this.theme;
+    }
 }

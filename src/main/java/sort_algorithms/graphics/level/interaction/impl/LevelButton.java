@@ -2,6 +2,7 @@ package sort_algorithms.graphics.level.interaction.impl;
 
 import KAGO_framework.view.DrawTool;
 import sort_algorithms.Wrapper;
+import sort_algorithms.graphics.level.Level;
 import sort_algorithms.graphics.level.interaction.LevelInteractionElement;
 
 import java.awt.*;
@@ -20,8 +21,8 @@ public class LevelButton extends LevelInteractionElement {
 
     private Consumer<LevelButton> click;
 
-    public LevelButton(String text, double x, double y, double width, double height, int fontSize) {
-        super(x, y, width, height);
+    public LevelButton(Level level, String text, double x, double y, double width, double height, int fontSize) {
+        super(level, x, y, width, height);
         this.text = text;
 
         this.textColor = Color.decode("#fcf965");
@@ -47,7 +48,7 @@ public class LevelButton extends LevelInteractionElement {
         drawTool.setCurrentColor(this.shadowColor);
         drawTool.drawFilledRectangle(this.getX(), this.getY(), this.width, this.height + 5);
 
-        drawTool.setCurrentColor(this.isHover(Wrapper.getViewController().getMouseX(), Wrapper.getViewController().getMouseY()) ? this.backgroundColor.brighter() : this.backgroundColor);
+        drawTool.setCurrentColor(this.isHover(Wrapper.getViewController().getMouseX(), Wrapper.getViewController().getMouseY()) ? Color.CYAN : this.backgroundColor);
         drawTool.drawFilledRectangle(this.getX(), this.getY(), this.width, this.height);
 
         drawTool.getGraphics2D().setFont(this.textFont);

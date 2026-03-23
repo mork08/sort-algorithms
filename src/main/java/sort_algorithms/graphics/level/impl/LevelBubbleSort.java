@@ -1,14 +1,10 @@
 package sort_algorithms.graphics.level.impl;
 
-import KAGO_framework.control.ViewController;
 import KAGO_framework.view.DrawTool;
-import sort_algorithms.Wrapper;
 import sort_algorithms.graphics.ThemeColor;
 import sort_algorithms.graphics.level.Level;
-import sort_algorithms.graphics.level.interaction.impl.LevelButton;
 import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.utils.misc.ColorObject;
-import sort_algorithms.utils.misc.CooldownManager;
 
 public class LevelBubbleSort extends Level {
     private double timer = 0.0;
@@ -30,11 +26,11 @@ public class LevelBubbleSort extends Level {
 
     @Override
     public void update(double dt) {
-        if (true) {
-            timer += dt;
-            if (timer > cooldown) {sorterHistory.stepForward();}
-            timer %= cooldown;
+        timer += dt;
+        if (timer > cooldown) {
+            sorterHistory.stepForward();
         }
+        timer %= cooldown;
     }
 
     @Override

@@ -61,14 +61,14 @@ public class ProgramController {
 
         Gui.registerGui(new GuiPause());
 
-        this.focusDefault(-1);
+        this.focusDefault(1);
         Wrapper.getLevelManager().loadStartLevel();
     }
 
     public void focusDefault(double zoom) {
         if (zoom == -1) zoom = 2;
         GameScene.getInstance().getCameraRenderer().zoom(zoom);
-        GameScene.getInstance().getCameraRenderer().focusAt(375, 475);
+        GameScene.getInstance().getCameraRenderer().focusAt(0, 0);
     }
 
     /***

@@ -2,17 +2,13 @@ package sort_algorithms.graphics.level.interaction;
 
 import KAGO_framework.view.DrawTool;
 import org.dyn4j.geometry.Vector2;
-import sort_algorithms.graphics.gui.Gui;
+import sort_algorithms.graphics.level.Level;
 import sort_algorithms.utils.math.MathUtils;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class LevelInteractionElement<T> {
-
-    public static List<LevelInteractionElement<?>> elements = new ArrayList<>();
 
     private double x;
     private double y;
@@ -21,13 +17,13 @@ public abstract class LevelInteractionElement<T> {
     protected Vector2 offset;
     protected T value;
 
-    public LevelInteractionElement(double x, double y, double width, double height) {
+    public LevelInteractionElement(Level level, double x, double y, double width, double height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.offset = new Vector2();
-        LevelInteractionElement.elements.add(this);
+        level.registerElement(this);
     }
 
     public abstract void update(double dt);

@@ -3,7 +3,6 @@ package sort_algorithms.model.scene.impl;
 import KAGO_framework.view.DrawTool;
 import sort_algorithms.Config;
 import sort_algorithms.Wrapper;
-import sort_algorithms.graphics.ThemeColor;
 import sort_algorithms.model.scene.Scene;
 import sort_algorithms.model.transitions.DefaultTransition;
 import sort_algorithms.utils.misc.FontType;

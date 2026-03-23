@@ -4,7 +4,6 @@ import KAGO_framework.model.abitur.datenstrukturen.Queue;
 import KAGO_framework.view.DrawTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sort_algorithms.graphics.level.interaction.LevelInteractionElement;
 import sort_algorithms.model.scene.Scene;
 import sort_algorithms.model.scene.impl.GameScene;
 import sort_algorithms.model.transitions.DefaultTransition;
@@ -372,43 +371,42 @@ public class LevelManager {
     }
 
     public void mouseEntered(MouseEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.mouseEntered(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseEntered(e));
     }
 
     public void mouseExited(MouseEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.mouseExited(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseExited(e));
     }
 
     public void mouseReleased(MouseEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.mouseReleased(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseReleased(e));
     }
 
     public void mouseClicked(MouseEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.mouseClicked(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseClicked(e));
     }
 
     public void mouseDragged(MouseEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.mouseDragged(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseDragged(e));
     }
 
     public void mouseMoved(MouseEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.mouseMoved(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.mouseMoved(e));
     }
 
     public void mousePressed(MouseEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.mousePressed(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.mousePressed(e));
     }
 
     public void keyTyped(KeyEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.keyTyped(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.keyTyped(e));
     }
 
     public void keyPressed(KeyEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.keyPressed(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.keyPressed(e));
     }
 
     public void keyReleased(KeyEvent e) {
-        LevelInteractionElement.elements.forEach(it -> it.keyReleased(e));
+        if (this.current != null) this.current.elements.forEach(it -> it.keyReleased(e));
     }
-
 }

@@ -273,7 +273,9 @@ public class ViewController extends Canvas implements KeyListener, MouseListener
         } else {
             this.drawFrame.setVisible(true);
         }
-        this.createDebugWindow(x, y);
+        if (sort_algorithms.Config.DEBUG) {
+            this.createDebugWindow(x, y);
+        }
 
         this.addMouseListener(this);
         this.addKeyListener(this);

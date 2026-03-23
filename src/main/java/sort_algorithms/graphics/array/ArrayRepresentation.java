@@ -1,12 +1,7 @@
 package sort_algorithms.graphics.array;
 
 import KAGO_framework.view.DrawTool;
-import sort_algorithms.animation.Easings;
-import sort_algorithms.animation.tween.Tween;
 import sort_algorithms.utils.misc.ColorObject;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class ArrayRepresentation {
     double x;
