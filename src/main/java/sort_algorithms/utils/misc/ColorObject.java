@@ -44,6 +44,10 @@ public class ColorObject extends Color {
         return new ColorObject(r, g, b, a);
     }
 
+    public static ColorObject of(ColorObject obj) {
+        return new ColorObject(obj.getRed(), obj.getGreen(), obj.getBlue(), obj.getAlpha());
+    }
+
     public static ColorObject of(String hex) {
         if (hex == null) throw new NullPointerException("Hex is null");
 
@@ -109,5 +113,15 @@ public class ColorObject extends Color {
         int a = (int) (from.getAlpha() + (to.getAlpha() - from.getAlpha()) * t);
 
         return new ColorObject(r, g, b, a);
+    }
+
+    public ColorObject dark() {
+        Color cl = this.darker();
+        return new ColorObject(cl.getRed(), cl.getGreen(), cl.getBlue(), cl.getAlpha());
+    }
+
+    public ColorObject bright() {
+        Color cl = this.brighter();
+        return new ColorObject(cl.getRed(), cl.getGreen(), cl.getBlue(), cl.getAlpha());
     }
 }

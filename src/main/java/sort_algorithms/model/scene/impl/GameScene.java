@@ -38,8 +38,8 @@ public class GameScene extends Scene {
         this.interactables = new ArrayList<>();
         this.cameraRenderer = CameraRenderer
                 .create(0, 0)
-                .zoom(2)
-                .offset(new Vector2(0, -150))
+                .zoom(1)
+                .offset(new Vector2(0, 0))
                 .smooth();
         this.renderer = new OrderRenderer();
         this.drawHitboxes = false;
@@ -88,6 +88,8 @@ public class GameScene extends Scene {
         Wrapper.getLevelManager().drawAfterObjects(drawTool);
 
         this.cameraRenderer.detach(drawTool);
+
+        Wrapper.getLevelManager().drawHUD(drawTool);
     }
 
     @Override

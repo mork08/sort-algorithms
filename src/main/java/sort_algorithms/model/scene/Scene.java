@@ -6,6 +6,7 @@ import KAGO_framework.view.DrawTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sort_algorithms.ProgramController;
+import sort_algorithms.Wrapper;
 import sort_algorithms.graphics.gui.Gui;
 import sort_algorithms.model.debug.VisualModel;
 import sort_algorithms.model.scene.impl.GameScene;
@@ -246,6 +247,7 @@ public abstract class Scene {
      */
     public void mouseEntered(MouseEvent e) {
         if (this.currentGui != null) this.currentGui.mouseEntered(e);
+        Wrapper.getLevelManager().mouseEntered(e);
     }
 
     /**
@@ -255,6 +257,7 @@ public abstract class Scene {
      */
     public void mouseExited(MouseEvent e) {
         if (this.currentGui != null) this.currentGui.mouseExited(e);
+        Wrapper.getLevelManager().mouseExited(e);
     }
 
     /**
@@ -264,6 +267,7 @@ public abstract class Scene {
      */
     public void mouseReleased(MouseEvent e) {
         if (this.currentGui != null) this.currentGui.mouseReleased(e);
+        Wrapper.getLevelManager().mouseReleased(e);
     }
 
     /**
@@ -273,6 +277,7 @@ public abstract class Scene {
      */
     public void mouseClicked(MouseEvent e) {
         if (this.currentGui != null) this.currentGui.mouseClicked(e);
+        Wrapper.getLevelManager().mouseClicked(e);
     }
 
     /**
@@ -282,6 +287,7 @@ public abstract class Scene {
      */
     public void mouseDragged(MouseEvent e) {
         if (this.currentGui != null) this.currentGui.mouseDragged(e);
+        Wrapper.getLevelManager().mouseDragged(e);
     }
 
     /**
@@ -291,6 +297,7 @@ public abstract class Scene {
      */
     public void mouseMoved(MouseEvent e) {
         if (this.currentGui != null) this.currentGui.mouseMoved(e);
+        Wrapper.getLevelManager().mouseMoved(e);
     }
 
     /**
@@ -300,6 +307,7 @@ public abstract class Scene {
      */
     public void mousePressed(MouseEvent e) {
         if (this.currentGui != null) this.currentGui.mousePressed(e);
+        Wrapper.getLevelManager().mousePressed(e);
     }
 
     /**
@@ -309,6 +317,7 @@ public abstract class Scene {
      */
     public void keyTyped(KeyEvent e) {
         if (this.currentGui != null) this.currentGui.keyTyped(e);
+        Wrapper.getLevelManager().keyTyped(e);
     }
 
     /**
@@ -334,6 +343,7 @@ public abstract class Scene {
                 if (this.currentGui != null) this.currentGui.onGuiOpen();
             }
         }
+        Wrapper.getLevelManager().keyPressed(e);
     }
 
     /**
@@ -343,5 +353,6 @@ public abstract class Scene {
      */
     public void keyReleased(KeyEvent e) {
         if (this.currentGui != null) this.currentGui.keyReleased(e);
+        Wrapper.getLevelManager().keyReleased(e);
     }
 }

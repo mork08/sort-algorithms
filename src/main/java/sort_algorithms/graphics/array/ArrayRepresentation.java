@@ -48,6 +48,7 @@ public class ArrayRepresentation {
         dataRepresentation[fromIndex] = dataRepresentation[toIndex];
         dataRepresentation[toIndex] = temp;
     }
+
     public void draw(DrawTool drawTool) {
         drawTool.push();
         drawTool.drawRectangle(x, y, width, height);

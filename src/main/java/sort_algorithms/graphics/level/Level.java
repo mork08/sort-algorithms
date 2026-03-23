@@ -1,9 +1,13 @@
 package sort_algorithms.graphics.level;
 
+
 import KAGO_framework.view.DrawTool;
 import sort_algorithms.Config;
+import sort_algorithms.Wrapper;
 import sort_algorithms.graphics.ThemeColor;
 import sort_algorithms.graphics.array.ArrayRepresentation;
+import sort_algorithms.graphics.level.interaction.LevelInteractionElement;
+import sort_algorithms.graphics.level.interaction.impl.LevelButton;
 import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.utils.misc.ColorObject;
 
@@ -15,6 +19,8 @@ public abstract class Level {
     protected SorterHistory sorterHistory;
     protected int[] array;
     protected boolean autoPlay;
+    private LevelButton btn;
+
 
     /***
      * "Erstellt" quasi das Level, wird in der ganzen Runtime nur einmal ausgeführt
@@ -23,11 +29,14 @@ public abstract class Level {
     protected Level(String name) {
         this.name = name;
         this.theme = ThemeColor.createDefault();
-        this.array = generateArray(0,100);
+        this.array = generateArray(0,20);
         scramble(array);
-        visualArray = new ArrayRepresentation(array, 0, 300, 1000, 400, (ColorObject) this.theme.accent());
+        visualArray = new ArrayRepresentation(array, 0, 250, 600, 400, (ColorObject) this.theme.accent());
         sorterHistory = sort(array);
         autoPlay = false;
+        this.btn = new LevelButton("TEST", 100, 100, 200, 50, 20);
+        this.btn.onClick((t) -> this.autoPlay = !this.autoPlay);
+
     }
 
     /***
@@ -49,6 +58,9 @@ public abstract class Level {
     public abstract void update(double dt);
     public abstract void draw(DrawTool drawTool);
     public void drawAfterObjects(DrawTool drawTool) {}
+    public void drawHUD(DrawTool drawTool) {
+        LevelInteractionElement.elements.forEach(element -> element.draw(drawTool));
+    }
 
     public String getName() {
         return this.name;
