@@ -21,7 +21,9 @@ public class LevelQuickSort extends Level {
     public void onHide() {}
 
     @Override
-    public void update(double dt) {}
+    public void update(double dt) {
+        autoplay();
+    }
 
     @Override
     public void draw(DrawTool drawTool) {
