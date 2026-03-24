@@ -148,4 +148,8 @@ public class SortingAlgorithmVisualizer {
     private int[] getArray() {
         return this.history.getStep().data().array();
     }
+
+    public void setAnimationDuration(double animationDuration) {
+        dataValues.forEach(value -> value.setAnimationDuration(animationDuration));
+    }
 }

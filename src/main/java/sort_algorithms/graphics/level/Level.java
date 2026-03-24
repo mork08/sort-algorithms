@@ -138,6 +138,11 @@ public abstract class Level {
             this.sorterHistory.stepBack(this.visualizer);
         }else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             autoplayActive = !autoplayActive;
+            if (autoplayActive) {
+                visualizer.setAnimationDuration(0.4);
+            }else{
+                visualizer.setAnimationDuration(1.0);
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_1) {
             Wrapper.getLevelManager().nextLevel("dfsfgdf");
