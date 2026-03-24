@@ -1,34 +1,37 @@
 package sort_algorithms.model.sorting;
 
-import sort_algorithms.graphics.array.ArrayRepresentation;
 
-public record SortingStep(int[] array, ArrayRepresentation arrayRepresentation, SortingType type, int index1, int index2) {
-
-    public void stepBack(){
+public record SortingStep(SortingType type, String message, SortingStepData data) {
+    public void stepBack() {
         switch(type){
             case SortingType.SWITCH:
-                switchPlaces(index2, index1);
+                this.switchPlaces(this.data.index2(), this.data.index1());
                 break;
+
             default:
                 break;
         }
     }
 
-    public void stepForward(){
+    public void stepForward() {
         switch(type){
             case SortingType.SWITCH:
-                switchPlaces(index1, index2);
+                this.switchPlaces(this.data.index1(), this.data.index2());
                 break;
+
             default:
                 break;
         }
     }
 
     private void switchPlaces(int index1, int index2){
-        int value1 = array[index1];
-        int value2 = array[index2];
-        array[index1] = value2;
-        array[index2] = value1;
-        arrayRepresentation.switchPlaces(index1, index2);
+        int value1 = this.data.array()[index1];
+        int value2 = this.data.array()[index2];
+        this.data.array()[index1] = value2;
+        this.data.array()[index2] = value1;
+    }
+
+    public String message(int value1, int value2) {
+        return this.message == null ? this.type.getMessage(value1, value2) : this.message.contains("%d") ? String.format(this.message, value1, value2) : this.message;
     }
 }

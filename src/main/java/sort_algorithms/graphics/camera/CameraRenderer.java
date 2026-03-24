@@ -26,6 +26,7 @@ public class CameraRenderer {
 
     private Entity focusEntity;
     private Vector2 focusPoint;
+    private Vector2 focusTopLeftPoint;
 
     private Queue<CameraEffect> effectQueue;
 
@@ -155,15 +156,29 @@ public class CameraRenderer {
 
     public void focusAt(double x, double y) {
         this.focusEntity = null;
+        this.focusTopLeftPoint = null;
         this.focusPoint = new Vector2(x, y);
     }
 
+    public void focusTopLeftAt(double x, double y) {
+        this.focusEntity = null;
+        this.focusPoint = null;
+        this.focusTopLeftPoint = new Vector2(x, y);
+    }
+
     public void focusAtEntity(Entity entity) {
+        this.focusTopLeftPoint = null;
         this.focusPoint = null;
         this.focusEntity = entity;
     }
 
     public void update(double dt) {
+        if (this.focusTopLeftPoint != null) {
+            this.pos.x = this.focusTopLeftPoint.x;
+            this.pos.y = this.focusTopLeftPoint.y;
+            return;
+        }
+
         Vector2 pos = null;
         if (this.focusEntity != null) pos = this.focusEntity.getBody().getPosition();
         else if (this.focusPoint != null) pos = this.focusPoint;

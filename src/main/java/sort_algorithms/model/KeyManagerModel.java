@@ -7,8 +7,8 @@ import java.io.IOException;
 
 public class KeyManagerModel {
 
-    public static KeyManagerModel KEY_START_GAME = new KeyManagerModel(KeyEvent.VK_ENTER, "Enter drücken zum Starten");
-    public static KeyManagerModel KEY_RESTART_GAME = new KeyManagerModel(KeyEvent.VK_ENTER, "Enter drücken zum Neustarten");
+    public static KeyManagerModel KEY_NEXT_ALG_STEP = new KeyManagerModel(KeyEvent.VK_RIGHT, "Nächster Schritt");
+    public static KeyManagerModel KEY_PREVIOUS_ALG_STEP = new KeyManagerModel(KeyEvent.VK_LEFT, "Vorheriger Schritt");
 
     private final int key;
     private final String description;
@@ -23,6 +23,8 @@ public class KeyManagerModel {
                 case KeyEvent.VK_SPACE -> filename = "SPACE";
                 case KeyEvent.VK_CONTROL -> filename = "CTRL";
                 case KeyEvent.VK_ENTER -> filename = "ENTER";
+                case KeyEvent.VK_LEFT -> filename = "ARROWLEFT";
+                case KeyEvent.VK_RIGHT -> filename = "ARROWRIGHT";
             }
             this.icon = ImageIO.read(KeyManagerModel.class.getResourceAsStream(String.format("/graphic/keys/%s.png", filename)));
 

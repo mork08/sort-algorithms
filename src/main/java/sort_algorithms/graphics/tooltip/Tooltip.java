@@ -83,10 +83,7 @@ public class Tooltip {
             if (this.getCurrentDescription() != null && !this.getCurrentDescription().equals(this.textCache)) {
                 this.textCache = this.getCurrentDescription().toUpperCase().replace(" ", "  ");
             }
-
-        } catch (NullPointerException e) {
-            log.error("Ignore error, java bug", e);
-        }
+        } catch (NullPointerException e) {}
 
         if (this.showTooltip() && (double) this.TOOLTIP_TWEEN_POSITION_Y.getTweenValue().getTarget() == this.TOOLTIP_TWEEN_POSITION_START) {
             this.TOOLTIP_TWEEN_POSITION_Y.redo(this.TOOLTIP_TWEEN_POSITION_Y.getValueDouble(), 0.0, this.TOOLTIP_TWEEN_DURATION);

@@ -75,7 +75,7 @@ public class GameScene extends Scene {
         this.cameraRenderer.attach(drawTool);
 
         drawTool.setCurrentColor(this.background);
-        drawTool.drawFilledRectangle(-2000, -1000, 4000, 2000);
+        drawTool.drawFilledRectangle(-2000, -1000, 4000, 4000);
         drawTool.resetColor();
 
         Wrapper.getLevelManager().draw(drawTool);

@@ -2,13 +2,17 @@ package sort_algorithms.graphics.level;
 
 
 import KAGO_framework.view.DrawTool;
+import sort_algorithms.Wrapper;
 import sort_algorithms.graphics.ThemeColor;
-import sort_algorithms.graphics.array.ArrayRepresentation;
 import sort_algorithms.graphics.level.interaction.LevelInteractionElement;
-import sort_algorithms.graphics.level.interaction.impl.LevelButton;
+import sort_algorithms.graphics.tooltip.Tooltip;
+import sort_algorithms.model.KeyManagerModel;
 import sort_algorithms.model.sorting.SorterHistory;
+import sort_algorithms.model.sorting.impl.SortingAlgorithmVisualizer;
 import sort_algorithms.utils.misc.ColorObject;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +22,9 @@ public abstract class Level {
 
     protected String name;
     protected ThemeColor theme;
-    protected ArrayRepresentation visualArray;
     protected SorterHistory sorterHistory;
+    protected SortingAlgorithmVisualizer visualizer;
     protected int[] array;
-    protected boolean autoPlay;
-    private LevelButton pauseBtn;
 
     /***
      * "Erstellt" quasi das Level, wird in der ganzen Runtime nur einmal ausgeführt
@@ -31,13 +33,37 @@ public abstract class Level {
     protected Level(String name) {
         this.name = name;
         this.theme = ThemeColor.createDefault();
-        this.array = generateArray(0,20);
-        scramble(array);
-        visualArray = new ArrayRepresentation(array, 0, 250, 600, 400, (ColorObject) this.theme.accent());
+        this.array = new int[] { 20, 3, 31, 17, 2, 6 }; // generateArray(0,20);
         sorterHistory = sort(array);
-        autoPlay = false;
-        this.pauseBtn = new LevelButton(this, "TEST", 100, 100, 200, 50, 20);
-        this.pauseBtn.onClick((t) -> this.autoPlay = !this.autoPlay);
+        double width = 600;
+        double height = 400;
+        this.visualizer = new SortingAlgorithmVisualizer(sorterHistory, (Wrapper.getScreenWidth() - width) / 2, (Wrapper.getScreenHeight() - height) / 2, width, height, (ColorObject) this.theme.accent());
+        this.visualizer.processStep();
+
+        Wrapper.getTooltipManager().register(
+            new Tooltip(
+                KeyManagerModel.KEY_NEXT_ALG_STEP,
+                (keyManager) -> {
+                    LevelManager levelManager = Wrapper.getLevelManager();
+                    if (levelManager != null && levelManager.getCurrent() == this && this.visualizer.allowSkip()) {
+                        return "Nächster Schritt";
+                    }
+                    return null;
+                }
+            )
+        );
+        Wrapper.getTooltipManager().register(
+            new Tooltip(
+                KeyManagerModel.KEY_PREVIOUS_ALG_STEP,
+                (keyManager) -> {
+                    LevelManager levelManager = Wrapper.getLevelManager();
+                    if (levelManager != null && levelManager.getCurrent() == this && this.visualizer.allowSkip()) {
+                        return "Vorheriger Schritt";
+                    }
+                    return null;
+                }
+            )
+        );
     }
 
     /***
@@ -69,7 +95,6 @@ public abstract class Level {
         int[] array = new int[max - min + 1];
         for (int i = 0; i < array.length; i++) {
             array[i] = min + i;
-
         }
         return array;
     }
@@ -95,4 +120,25 @@ public abstract class Level {
     public ThemeColor getTheme() {
         return this.theme;
     }
+
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {}
+    public void keyTyped(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            this.sorterHistory.stepForward(this.visualizer);
+
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            this.sorterHistory.stepBack(this.visualizer);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_1) {
+            Wrapper.getLevelManager().nextLevel("dfsfgdf");
+        }
+    }
+    public void keyReleased(KeyEvent e) {}
 }

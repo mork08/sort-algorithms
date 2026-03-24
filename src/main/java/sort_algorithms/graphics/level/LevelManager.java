@@ -122,7 +122,7 @@ public class LevelManager {
 
     /** Aktiviert das Startlevel (Loader-Callback). */
     public void loadStartLevel() {
-        this.current.onActive();
+        if (this.current != null) this.current.onActive();
     }
 
     /**
@@ -307,7 +307,7 @@ public class LevelManager {
         this.current = this.next;
         this.current.onActive();
         this.index++;
-        this.next = this.levels.get(this.index + 1);
+        this.next = this.levels.size() == this.index + 1 ? null : this.levels.get(this.index + 1);
     }
 
     /**
@@ -371,42 +371,72 @@ public class LevelManager {
     }
 
     public void mouseEntered(MouseEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.mouseEntered(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.mouseEntered(e));
+            this.current.mouseEntered(e);
+        }
     }
 
     public void mouseExited(MouseEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.mouseExited(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.mouseExited(e));
+            this.current.mouseExited(e);
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.mouseReleased(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.mouseReleased(e));
+            this.current.mouseReleased(e);
+        }
     }
 
     public void mouseClicked(MouseEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.mouseClicked(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.mouseClicked(e));
+            this.current.mouseClicked(e);
+        }
     }
 
     public void mouseDragged(MouseEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.mouseDragged(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.mouseDragged(e));
+            this.current.mouseDragged(e);
+        }
     }
 
     public void mouseMoved(MouseEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.mouseMoved(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.mouseMoved(e));
+            this.current.mouseMoved(e);
+        }
     }
 
     public void mousePressed(MouseEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.mousePressed(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.mousePressed(e));
+            this.current.mousePressed(e);
+        }
     }
 
     public void keyTyped(KeyEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.keyTyped(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.keyTyped(e));
+            this.current.keyTyped(e);
+        }
     }
 
     public void keyPressed(KeyEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.keyPressed(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.keyPressed(e));
+            this.current.keyPressed(e);
+        }
     }
 
     public void keyReleased(KeyEvent e) {
-        if (this.current != null) this.current.elements.forEach(it -> it.keyReleased(e));
+        if (this.current != null) {
+            this.current.elements.forEach(it -> it.keyReleased(e));
+            this.current.keyReleased(e);
+        }
     }
 }
