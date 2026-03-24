@@ -25,42 +25,36 @@ public class LevelBubbleSort extends Level {
     public void onReset() {}
 
     @Override
-    public void update(double dt) {
-        timer += dt;
-        if (timer > cooldown) {
-            sorterHistory.stepForward();
-        }
-        timer %= cooldown;
-    }
+    public void update(double dt) {}
 
     @Override
     public void draw(DrawTool drawTool) {
-        drawTool.push();
-        drawTool.setCurrentColor(this.theme.base());
-        drawTool.drawFilledCircle(0,0,10);
-
-        visualArray.draw(drawTool);
-        drawTool.pop();
+        this.visualizer.draw(drawTool);
     }
 
     @Override
     protected SorterHistory sort(int[] array) {
         int[] arrayCopy = new int[array.length];
-        SorterHistory sorterHistory = new SorterHistory(array, visualArray);
+        SorterHistory sorterHistory = new SorterHistory("Bubble Sort", array);
         System.arraycopy(array, 0, arrayCopy, 0, array.length);
         boolean sorted = true;
         while (sorted) {
             sorted = false;
             for (int i = 0; i < arrayCopy.length - 1; i++) {
+                sorterHistory.comparePlaces(i, i + 1, null);
                 if (arrayCopy[i] > arrayCopy[i + 1]) {
                     sorted = true;
                     int temp = arrayCopy[i];
                     arrayCopy[i] = arrayCopy[i + 1];
                     arrayCopy[i + 1] = temp;
-                    sorterHistory.switchPlaces(i, i + 1);
+                    sorterHistory.switchPlaces(i, i + 1, null);
+
+                } else {
+                    sorterHistory.noSwitch(i, i + 1, null);
                 }
             }
         }
+        sorterHistory.finish(null);
         return sorterHistory;
     }
 }

@@ -68,7 +68,7 @@ public class ProgramController {
     public void focusDefault(double zoom) {
         if (zoom == -1) zoom = 2;
         GameScene.getInstance().getCameraRenderer().zoom(zoom);
-        GameScene.getInstance().getCameraRenderer().focusAt(0, 0);
+        GameScene.getInstance().getCameraRenderer().focusTopLeftAt(0, 0);
     }
 
     /***

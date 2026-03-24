@@ -487,8 +487,12 @@ public class DrawTool {
         frameworkGraphics.getGraphics2D().setStroke(new BasicStroke());
     }
 
-    public void drawCenteredText(String text, double x, double y, double width, double height){
+    public void drawCenteredText(String text, double x, double y, double width, double height) {
         this.drawCenteredText(frameworkGraphics.getGraphics2D().getFont(), text, x, y, width, height);
+    }
+
+    public void drawCenteredText(String text, double x, double y, double width) {
+        this.drawCenteredText(frameworkGraphics.getGraphics2D().getFont(), text, x, y, width);
     }
 
     public void drawCenteredText(Font font, String text, double x, double y, double width, double height){
@@ -497,6 +501,18 @@ public class DrawTool {
         double textY = y + ((height - metrics.getHeight()) / 2) + metrics.getAscent();
         frameworkGraphics.getGraphics2D().setFont(font);
         this.drawText(text, textX, textY);
+    }
+
+    public void drawCenteredText(Font font, String text, double x, double y, double width) {
+        FontMetrics metrics = frameworkGraphics.getGraphics2D().getFontMetrics(font);
+        double textX = x + (width - metrics.stringWidth(text)) / 2;
+        double textY = y;
+        frameworkGraphics.getGraphics2D().setFont(font);
+        this.drawText(text, textX, textY);
+    }
+
+    public void setFont(Font font) {
+        this.getGraphics2D().setFont(font);
     }
 
     public int getWindowX() {
