@@ -18,6 +18,7 @@ import java.util.List;
 
 public abstract class Level {
 
+    protected boolean autoplayActive = false;
     protected List<LevelInteractionElement<?>> elements = new ArrayList<>();
 
     protected String name;
@@ -135,10 +136,17 @@ public abstract class Level {
 
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             this.sorterHistory.stepBack(this.visualizer);
+        }else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            autoplayActive = !autoplayActive;
         }
         if (e.getKeyCode() == KeyEvent.VK_1) {
             Wrapper.getLevelManager().nextLevel("dfsfgdf");
         }
     }
     public void keyReleased(KeyEvent e) {}
+    protected void autoplay(){
+        if(!autoplayActive) return;
+        this.sorterHistory.stepForward(this.visualizer);
+
+    }
 }

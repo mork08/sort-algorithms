@@ -6,13 +6,15 @@ import sort_algorithms.graphics.level.Level;
 import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.utils.misc.ColorObject;
 
+import java.awt.*;
+
 public class LevelQuickSort extends Level {
     private double timer = 0.0;
     private double cooldown = 0.3;
 
     public LevelQuickSort() {
         super("Quick Sort");
-        this.theme = new ThemeColor(ColorObject.ORANGE, ColorObject.RED);
+        this.theme = new ThemeColor(new Color(95, 197, 138,1), new Color(68, 122, 50));
     }
 
     @Override
@@ -25,7 +27,7 @@ public class LevelQuickSort extends Level {
     public void onReset() {}
 
     @Override
-    public void update(double dt) {}
+    public void update(double dt) {autoplay();}
 
     @Override
     public void draw(DrawTool drawTool) {
