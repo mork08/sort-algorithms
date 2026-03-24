@@ -1,7 +1,7 @@
 package sort_algorithms.graphics.tooltip;
 
 import KAGO_framework.view.DrawTool;
-import sort_algorithms.Config;
+import sort_algorithms.Wrapper;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -10,7 +10,6 @@ public class TooltipManager {
     private final CopyOnWriteArrayList<Tooltip> tooltips = new CopyOnWriteArrayList<>();
 
     private double TOOLTIP_START_X = 30;
-    private double TOOLTIP_START_Y = Config.WINDOW_HEIGHT - 90;
     private double TOOLTIP_MARGIN_X = 40;
 
     public void register(Tooltip tooltip) {
@@ -28,7 +27,7 @@ public class TooltipManager {
         for (int i = this.tooltips.size() - 1; i >= 0; i--) {
             var tooltip = this.tooltips.get(i);
             // ((this.tooltips.size() - 1) - i)
-            tooltip.draw(drawTool, lastX, this.TOOLTIP_START_Y);
+            tooltip.draw(drawTool, lastX, this.getStartY());
             if (tooltip.showTooltip()) {
                 lastX += tooltip.getTooltipWidth(drawTool) + this.TOOLTIP_MARGIN_X;
             }
@@ -41,7 +40,7 @@ public class TooltipManager {
     }
 
     public double getStartY() {
-        return this.TOOLTIP_START_Y;
+        return Wrapper.getScreenHeight() - 90;
     }
 
     public CopyOnWriteArrayList<Tooltip> getTooltips() {

@@ -70,7 +70,7 @@ public class GameScene extends Scene {
         this.cameraRenderer.attach(drawTool);
 
         drawTool.setCurrentColor(Wrapper.getLevelManager().getCurrent() == null ? Color.decode("#4d222c") : Wrapper.getLevelManager().getCurrent().getTheme().background());
-        drawTool.drawFilledRectangle(-2000, -1000, 4000, 4000);
+        drawTool.drawFilledRectangle(-Wrapper.getScreenWidth(), -Wrapper.getScreenHeight(), Wrapper.getScreenWidth() * 2, Wrapper.getScreenHeight() * 2);
         drawTool.resetColor();
 
         Wrapper.getLevelManager().draw(drawTool);

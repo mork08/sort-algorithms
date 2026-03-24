@@ -1,7 +1,6 @@
 package sort_algorithms.graphics.tooltip;
 
 import KAGO_framework.view.DrawTool;
-import sort_algorithms.Config;
 import sort_algorithms.Wrapper;
 import sort_algorithms.animation.Easings;
 import sort_algorithms.animation.tween.Tween;
@@ -24,7 +23,7 @@ public class Tooltip {
 
     private final Font TOOLTIP_FONT;
     private double TOOLTIP_TWEEN_DURATION = 1.6;
-    private double TOOLTIP_TWEEN_POSITION_START = Config.WINDOW_HEIGHT + 20 - Wrapper.getTooltipManager().getStartY();
+    private double TOOLTIP_TWEEN_POSITION_START;
     private Color TOOLTIP_TEXT_COLOR = Color.decode("#b29f99");
     private Color TOOLTIP_OUTLINE_COLOR = Color.decode("#554544");
     private Tween TOOLTIP_TWEEN_POSITION_X;
@@ -34,6 +33,7 @@ public class Tooltip {
         this.keyModel = keyModel;
         this.function = function;
         this.textCache = function.apply(this.keyModel) != null ? function.apply(this.keyModel).toUpperCase().replace(" ", "  ") : "";
+        this.TOOLTIP_TWEEN_POSITION_START = Wrapper.getScreenHeight() + 20 - Wrapper.getTooltipManager().getStartY();
 
         this.iconHeight = 30;
         this.iconRatio = (double) this.iconHeight / this.getKeyModel().getIcon().getHeight();
