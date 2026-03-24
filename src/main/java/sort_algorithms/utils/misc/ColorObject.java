@@ -48,6 +48,10 @@ public class ColorObject extends Color {
         return new ColorObject(obj.getRed(), obj.getGreen(), obj.getBlue(), obj.getAlpha());
     }
 
+    public static ColorObject of(Color obj) {
+        return new ColorObject(obj.getRed(), obj.getGreen(), obj.getBlue(), obj.getAlpha());
+    }
+
     public static ColorObject of(String hex) {
         if (hex == null) throw new NullPointerException("Hex is null");
 

@@ -21,15 +21,14 @@ public class LevelButton extends LevelInteractionElement {
 
     private Consumer<LevelButton> click;
 
-    public LevelButton(Level level, String text, double x, double y, double width, double height, int fontSize) {
+    public LevelButton(Level level, String text, double x, double y, double width, double height, int fontSize, Color color) {
         super(level, x, y, width, height);
         this.text = text;
 
         this.textColor = Color.decode("#fcf965");
         this.textFont = Wrapper.getCacheManager().loadFont(fontSize);
 
-        //this.backgroundColor = Color.decode("#6c1103");
-        this.backgroundColor = new Color(174, 46, 6, 0);
+        this.backgroundColor = color == null ? new Color(174, 46, 6) : color;
         this.shadowColor = Color.decode("#2c0601");
     }
 
@@ -48,12 +47,13 @@ public class LevelButton extends LevelInteractionElement {
         drawTool.setCurrentColor(this.shadowColor);
         drawTool.drawFilledRectangle(this.getX(), this.getY(), this.width, this.height + 5);
 
-        drawTool.setCurrentColor(this.isHover(Wrapper.getViewController().getMouseX(), Wrapper.getViewController().getMouseY()) ? Color.CYAN : this.backgroundColor);
+        drawTool.setCurrentColor(this.isHover(Wrapper.getViewController().getMouseX(), Wrapper.getViewController().getMouseY()) ? this.backgroundColor.darker() : this.backgroundColor);
         drawTool.drawFilledRectangle(this.getX(), this.getY(), this.width, this.height);
 
         drawTool.getGraphics2D().setFont(this.textFont);
         drawTool.setCurrentColor(this.isHover(Wrapper.getViewController().getMouseX(), Wrapper.getViewController().getMouseY()) ? this.textColor.brighter() : this.textColor);
-        drawTool.drawText(this.text, this.getX() + (this.width - drawTool.getFontWidth(this.text)) / 2, this.getY() + (this.height) / 2 + drawTool.getFontHeight());
+        String t = this.text.toUpperCase();
+        drawTool.drawText(t, this.getX() + (this.width - drawTool.getFontWidth(t)) / 2, this.getY() + (this.height) / 2 + drawTool.getFontHeight() + 2);
 
         drawTool.pop();
     }
@@ -63,5 +63,9 @@ public class LevelButton extends LevelInteractionElement {
         if (this.isHover(e.getX(), e.getY())) {
             if (this.click != null) this.click.accept(this);
         }
+    }
+
+    public String getText() {
+        return this.text;
     }
 }

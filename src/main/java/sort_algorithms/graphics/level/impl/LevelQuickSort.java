@@ -11,8 +11,7 @@ public class LevelQuickSort extends Level {
     private double cooldown = 0.3;
 
     public LevelQuickSort() {
-        super("Quick Sort");
-        this.theme = new ThemeColor(ColorObject.ORANGE, ColorObject.RED);
+        super("Quick Sort", new ThemeColor(ColorObject.of("#6f13e8"), ColorObject.of("#617eff"), ColorObject.of("#3a224d")));
     }
 
     @Override
@@ -20,9 +19,6 @@ public class LevelQuickSort extends Level {
 
     @Override
     public void onHide() {}
-
-    @Override
-    public void onReset() {}
 
     @Override
     public void update(double dt) {}

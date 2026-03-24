@@ -20,7 +20,7 @@ public class SortingAlgorithmVisualizer {
     private final double width;
     private final double height;
     private final double outlineOffset;
-    private final ColorObject color;
+    private final Color color;
     private final SorterHistory history;
     private final List<SortingDataValue> dataValues;
     private final Font titleFont;
@@ -33,7 +33,7 @@ public class SortingAlgorithmVisualizer {
     private SortingDataValue last1;
     private SortingDataValue last2;
 
-    public SortingAlgorithmVisualizer(SorterHistory history, double x, double y, double width, double height, ColorObject color) {
+    public SortingAlgorithmVisualizer(SorterHistory history, double x, double y, double width, double height, Color color) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -42,7 +42,7 @@ public class SortingAlgorithmVisualizer {
         this.history = history;
         this.outlineOffset = 10;
         this.dataValues = new ArrayList<>();
-        this.titleFont = Wrapper.getCacheManager().loadFont(35);
+        this.titleFont = Wrapper.getCacheManager().loadFont(45);
         this.font = Wrapper.getCacheManager().loadFont(20);
 
         double cStartX = 0;
@@ -60,10 +60,11 @@ public class SortingAlgorithmVisualizer {
         drawTool.push();
 
         drawTool.setCurrentColor(this.color);
+        drawTool.setLineWidth(4);
         drawTool.drawRectangle(this.x - this.outlineOffset, this.y - this.outlineOffset, this.width + this.outlineOffset * 2, this.height + this.outlineOffset * 2);
 
         drawTool.setFont(this.titleFont);
-        drawTool.setCurrentColor(this.color.dark());
+        drawTool.setCurrentColor(ColorObject.of(this.color).invert());
         drawTool.drawCenteredText(this.history.getName().toUpperCase(), this.x - this.outlineOffset, this.y - this.outlineOffset - 80, this.width + this.outlineOffset * 2);
 
         SortingStepData data = this.history.getStep().data();
@@ -71,7 +72,7 @@ public class SortingAlgorithmVisualizer {
         int value2 = data.array()[data.index2()];
 
         drawTool.setFont(this.font);
-        drawTool.setCurrentColor(this.color.dark().dark());
+        drawTool.setCurrentColor(this.color);
         String text = this.history.getStep().message(value1, value2).toUpperCase().replaceAll(" ", "  ");
         drawTool.drawCenteredText(text, this.x - this.outlineOffset, this.y - this.outlineOffset - 40, this.width + this.outlineOffset * 2);
 

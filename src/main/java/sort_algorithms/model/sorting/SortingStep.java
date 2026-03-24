@@ -3,7 +3,7 @@ package sort_algorithms.model.sorting;
 
 public record SortingStep(SortingType type, String message, SortingStepData data) {
     public void stepBack() {
-        switch(type){
+        switch (type){
             case SortingType.SWITCH:
                 this.switchPlaces(this.data.index2(), this.data.index1());
                 break;
@@ -14,7 +14,7 @@ public record SortingStep(SortingType type, String message, SortingStepData data
     }
 
     public void stepForward() {
-        switch(type){
+        switch (type) {
             case SortingType.SWITCH:
                 this.switchPlaces(this.data.index1(), this.data.index2());
                 break;

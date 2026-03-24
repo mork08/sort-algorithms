@@ -11,8 +11,7 @@ public class LevelBubbleSort extends Level {
     private double cooldown = 0.3;
 
     public LevelBubbleSort() {
-        super("Bubble Sort");
-        this.theme = new ThemeColor(ColorObject.ORANGE, ColorObject.RED);
+        super("Bubble Sort", new ThemeColor(ColorObject.ORANGE, ColorObject.RED, ColorObject.of("#4d222c")));
     }
 
     @Override

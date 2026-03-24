@@ -16,7 +16,7 @@ public class SortingDataValue {
     private double y;
     private double width;
     private double height;
-    private final ColorObject color;
+    private final Color color;
 
     private boolean marked;
 
@@ -24,7 +24,7 @@ public class SortingDataValue {
     private Tween MOVEMENT_Y;
     private Font font;
 
-    public SortingDataValue(int value, int[] array, double x, double y, double width, double height, int fontSize, ColorObject color) {
+    public SortingDataValue(int value, int[] array, double x, double y, double width, double height, int fontSize, Color color) {
         this.value = value;
         this.array = array;
         this.x = x;
@@ -88,7 +88,7 @@ public class SortingDataValue {
         if (this.marked) {
             drawTool.push();
 
-            drawTool.setCurrentColor(this.color.bright());
+            drawTool.setCurrentColor(ColorObject.of(this.color).invert());
             drawTool.setLineWidth(5);
             drawTool.drawRectangle(this.x, this.y, this.width, this.height);
 

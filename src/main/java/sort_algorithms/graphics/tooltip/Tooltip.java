@@ -39,7 +39,7 @@ public class Tooltip {
         this.textCache = function.apply(this.keyModel) != null ? function.apply(this.keyModel).toUpperCase().replace(" ", "  ") : "";
 
         this.iconHeight = 30;
-        this.iconRatio = this.iconHeight / this.getKeyModel().getIcon().getHeight();
+        this.iconRatio = (double) this.iconHeight / this.getKeyModel().getIcon().getHeight();
         this.iconWidth = (int) (this.getKeyModel().getIcon().getWidth() * this.iconRatio);
 
         this.TOOLTIP_FONT = Wrapper.getCacheManager().loadFont(20);
@@ -120,6 +120,6 @@ public class Tooltip {
             );
         }
 
-        drawTool.getGraphics2D().drawImage(icon, (int) this.TOOLTIP_TWEEN_POSITION_X.getValueDouble(), (int) (y + this.TOOLTIP_TWEEN_POSITION_Y.getValueDouble()), this.iconWidth, this.iconHeight, null);
+        drawTool.getGraphics2D().drawImage(icon, (int) this.TOOLTIP_TWEEN_POSITION_X.getValueDouble(), (int) (y + 2 + this.TOOLTIP_TWEEN_POSITION_Y.getValueDouble()), this.iconWidth, this.iconHeight, null);
     }
 }

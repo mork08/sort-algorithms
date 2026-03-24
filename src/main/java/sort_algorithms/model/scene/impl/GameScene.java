@@ -23,7 +23,6 @@ public class GameScene extends Scene {
     private List<Interactable> interactables;
     private List<Drawable> drawables;
     private OrderRenderer renderer;
-    private Color background = Color.decode("#4d222c");
     private boolean drawHitboxes;
 
     private static GameScene instance = new GameScene();
@@ -57,10 +56,6 @@ public class GameScene extends Scene {
         super.update(dt);
     }
 
-    public void setBackground(Color color) {
-        this.background = color;
-    }
-
     private void drawAllHitboxes(DrawTool drawTool) {
         if (this.drawHitboxes) {
             Wrapper.getEntityManager().getWorld().getBodies().forEach(b -> {
@@ -74,7 +69,7 @@ public class GameScene extends Scene {
     public void drawGame(DrawTool drawTool) {
         this.cameraRenderer.attach(drawTool);
 
-        drawTool.setCurrentColor(this.background);
+        drawTool.setCurrentColor(Wrapper.getLevelManager().getCurrent() == null ? Color.decode("#4d222c") : Wrapper.getLevelManager().getCurrent().getTheme().background());
         drawTool.drawFilledRectangle(-2000, -1000, 4000, 4000);
         drawTool.resetColor();
 
