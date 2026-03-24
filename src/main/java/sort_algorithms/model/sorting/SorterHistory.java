@@ -53,9 +53,8 @@ public class SorterHistory {
     public void stepBack(SortingAlgorithmVisualizer visualizer) {
         if (!visualizer.allowSkip()) return;
         if (currentIndex == 0) return;
-
+        list.get(currentIndex - 1).stepBack();
         currentIndex--;
-        list.get(currentIndex).stepBack();
         visualizer.processStep();
     }
 

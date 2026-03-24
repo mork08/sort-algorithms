@@ -73,7 +73,7 @@ public class SortingAlgorithmVisualizer {
 
         drawTool.setFont(this.font);
         drawTool.setCurrentColor(this.color);
-        String text = this.history.getStep().message(value1, value2).toUpperCase().replaceAll(" ", "  ");
+        String text = "(" + (this.history.getCurrentIndex() + 1) + "/ " + this.history.getSteps() + ")  " +this.history.getStep().message(value1, value2).toUpperCase().replaceAll(" ", "  ");
         drawTool.drawCenteredText(text, this.x - this.outlineOffset, this.y - this.outlineOffset - 40, this.width + this.outlineOffset * 2);
 
         for (SortingDataValue val : this.dataValues) {
@@ -148,5 +148,9 @@ public class SortingAlgorithmVisualizer {
 
     private int[] getArray() {
         return this.history.getStep().data().array();
+    }
+
+    public void setAnimationDuration(double animationDuration) {
+        dataValues.forEach(value -> value.setAnimationDuration(animationDuration));
     }
 }

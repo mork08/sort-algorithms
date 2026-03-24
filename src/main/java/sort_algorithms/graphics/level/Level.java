@@ -4,8 +4,7 @@ package sort_algorithms.graphics.level;
 import KAGO_framework.view.DrawTool;
 import sort_algorithms.Wrapper;
 import sort_algorithms.graphics.ThemeColor;
-import sort_algorithms.graphics.level.impl.LevelBubbleSort;
-import sort_algorithms.graphics.level.impl.LevelQuickSort;
+import sort_algorithms.graphics.level.impl.*;
 import sort_algorithms.graphics.level.interaction.LevelInteractionElement;
 import sort_algorithms.graphics.level.interaction.impl.LevelButton;
 import sort_algorithms.graphics.tooltip.Tooltip;
@@ -17,11 +16,13 @@ import sort_algorithms.utils.math.MathUtils;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Level {
 
+    protected boolean autoplayActive = false;
     protected List<LevelInteractionElement<?>> elements = new ArrayList<>();
 
     protected String name;
@@ -57,11 +58,32 @@ public abstract class Level {
             )
         );
 
+        if (!(this instanceof LevelBinarySearch || this instanceof LevelLinearSearch)) {
+            Wrapper.getTooltipManager().register(
+                new Tooltip(
+                    KeyManagerModel.KEY_AUTOPLAY,
+                    (keyManager) -> {
+                        LevelManager levelManager = Wrapper.getLevelManager();
+                        if (levelManager != null && levelManager.getCurrent() == this) {
+                            if (this.autoplayActive) {
+                                return "Autoplay aus";
+
+                            } else {
+                                return "Autoplay an";
+                            }
+                        }
+                        return null;
+                    }
+                )
+            );
+        }
+
         double buttonWidth = 320;
         double buttonHeight = 50;
         double buttonGap = 20;
         double buttonY = 40;
         double totalButtonWidth = buttonWidth * 4 + buttonGap * 3;
+
         double startX = (Wrapper.getScreenWidth() - totalButtonWidth) / 2;
 
         new LevelButton(this, "Quick Sort", startX, buttonY, buttonWidth, buttonHeight, 24, theme.accent())
@@ -74,14 +96,14 @@ public abstract class Level {
         new LevelButton(this, "Selection Sort", startX + buttonWidth + buttonGap, buttonY, buttonWidth, buttonHeight, 24, theme.accent())
                 .onClick((btn) -> {
                     if (!this.name.equals(btn.getText())) {
-                        Wrapper.getLevelManager().nextLevel(new LevelBubbleSort(), "bb2", null, new DefaultTransition());
+                        Wrapper.getLevelManager().nextLevel(new LevelSelectionSort(), "bb2", null, new DefaultTransition());
                     }
                 });
 
         new LevelButton(this, "Insertion Sort", startX + (buttonWidth + buttonGap) * 2, buttonY, buttonWidth, buttonHeight, 24, theme.accent())
                 .onClick((btn) -> {
                     if (!this.name.equals(btn.getText())) {
-                        Wrapper.getLevelManager().nextLevel(new LevelBubbleSort(), "bb3", null, new DefaultTransition());
+                        Wrapper.getLevelManager().nextLevel(new LevelInsertionSort(), "bb3", null, new DefaultTransition());
                     }
                 });
 
@@ -89,6 +111,23 @@ public abstract class Level {
                 .onClick((btn) -> {
                     if (!this.name.equals(btn.getText())) {
                         Wrapper.getLevelManager().nextLevel(new LevelBubbleSort(), "bb4", null, new DefaultTransition());
+                    }
+                });
+
+        totalButtonWidth = buttonWidth * 2 + buttonGap;
+        startX = (Wrapper.getScreenWidth() - totalButtonWidth) / 2;
+
+        new LevelButton(this, "Linear Search", startX, buttonY + buttonHeight + 10, buttonWidth, buttonHeight, 24, theme.accent())
+                .onClick((btn) -> {
+                    if (!this.name.equals(btn.getText())) {
+                        Wrapper.getLevelManager().nextLevel(new LevelLinearSearch(), "bb5", null, new DefaultTransition());
+                    }
+                });
+
+        new LevelButton(this, "Binary Search", startX + buttonWidth + buttonGap, buttonY + buttonHeight + 10, buttonWidth, buttonHeight, 24, theme.accent())
+                .onClick((btn) -> {
+                    if (!this.name.equals(btn.getText())) {
+                        Wrapper.getLevelManager().nextLevel(new LevelBinarySearch(), "bb6", null, new DefaultTransition());
                     }
                 });
     }
@@ -175,9 +214,19 @@ public abstract class Level {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             this.sorterHistory.stepForward(this.visualizer);
 
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            this.sorterHistory.stepBack(this.visualizer);
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE && !(this instanceof LevelBinarySearch || this instanceof LevelLinearSearch)) {
+            this.autoplayActive = !this.autoplayActive;
+            if (this.autoplayActive) {
+                this.visualizer.setAnimationDuration(0.4);
+            } else {
+                this.visualizer.setAnimationDuration(1.0);
+            }
         }
     }
     public void keyReleased(KeyEvent e) {}
+
+    protected void autoplay(){
+        if(!autoplayActive) return;
+        this.sorterHistory.stepForward(this.visualizer);
+    }
 }

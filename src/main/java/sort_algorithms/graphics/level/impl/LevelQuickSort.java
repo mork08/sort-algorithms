@@ -6,6 +6,8 @@ import sort_algorithms.graphics.level.Level;
 import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.utils.misc.ColorObject;
 
+import java.awt.*;
+
 public class LevelQuickSort extends Level {
     private double timer = 0.0;
     private double cooldown = 0.3;
@@ -21,7 +23,9 @@ public class LevelQuickSort extends Level {
     public void onHide() {}
 
     @Override
-    public void update(double dt) {}
+    public void update(double dt) {
+        autoplay();
+    }
 
     @Override
     public void draw(DrawTool drawTool) {

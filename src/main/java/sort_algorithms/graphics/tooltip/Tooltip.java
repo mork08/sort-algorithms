@@ -1,8 +1,6 @@
 package sort_algorithms.graphics.tooltip;
 
 import KAGO_framework.view.DrawTool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import sort_algorithms.Config;
 import sort_algorithms.Wrapper;
 import sort_algorithms.animation.Easings;
@@ -15,7 +13,6 @@ import java.util.function.Function;
 
 public class Tooltip {
 
-    private static final Logger log = LoggerFactory.getLogger(Tooltip.class);
     private final KeyManagerModel keyModel;
     private final Function<KeyManagerModel, String> function;
     private final double iconRatio;
@@ -75,7 +72,7 @@ public class Tooltip {
 
     public double getTooltipWidth(DrawTool drawTool) {
         if (this.getDescription() == null) return 0;
-        return drawTool.getFontWidth(drawTool.getGraphics2D().getFont(), this.getDescription()) + this.keyModel.getIcon().getWidth();
+        return drawTool.getFontWidth(drawTool.getGraphics2D().getFont(), this.getDescription()) + this.iconWidth;
     }
 
     public void update(double dt) {
@@ -95,7 +92,6 @@ public class Tooltip {
 
         } else if (this.showTooltip() && (double) this.TOOLTIP_TWEEN_POSITION_Y.getTweenValue().getTarget() == 0.0 && !this.TOOLTIP_TWEEN_POSITION_Y.isRunning() && !this.TOOLTIP_TWEEN_POSITION_Y.isFinished()) {
             this.TOOLTIP_TWEEN_POSITION_Y.animate();
-
         }
     }
 

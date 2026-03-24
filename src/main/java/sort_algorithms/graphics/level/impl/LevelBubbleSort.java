@@ -7,8 +7,6 @@ import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.utils.misc.ColorObject;
 
 public class LevelBubbleSort extends Level {
-    private double timer = 0.0;
-    private double cooldown = 0.3;
 
     public LevelBubbleSort() {
         super("Bubble Sort", new ThemeColor(ColorObject.ORANGE, ColorObject.RED, ColorObject.of("#4d222c")));
@@ -21,10 +19,9 @@ public class LevelBubbleSort extends Level {
     public void onHide() {}
 
     @Override
-    public void onReset() {}
-
-    @Override
-    public void update(double dt) {}
+    public void update(double dt) {
+        autoplay();
+    }
 
     @Override
     public void draw(DrawTool drawTool) {
