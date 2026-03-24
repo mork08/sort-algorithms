@@ -171,7 +171,7 @@ public class LevelManager {
             if (tr.swap()) {
                 if (this.current != next) {
                     if (this.transition.dir() == LevelSwitch.LevelSwitchDirection.NEXT) {
-                        this.setNextLevel();
+                        this.setNextLevel(next);
 
                     } else {
                         this.setPreviousLevel();
@@ -264,6 +264,11 @@ public class LevelManager {
         this.initiateNewLevel(id, LevelSwitch.LevelSwitchDirection.NEXT, this.next, runWhileTransition, transition);
     }
 
+    public void nextLevel(Level level, String id, Runnable runWhileTransition, Transition transition) {
+        if (Scene.getCurrentScene() != GameScene.getInstance()) return;
+        this.initiateNewLevel(id, LevelSwitch.LevelSwitchDirection.NEXT, level, runWhileTransition, transition);
+    }
+
     /**
      * Wechselt zum vorherigen Level mit DefaultTransition.
      *
@@ -308,6 +313,16 @@ public class LevelManager {
         this.current.onActive();
         this.index++;
         this.next = this.levels.size() == this.index + 1 ? null : this.levels.get(this.index + 1);
+    }
+
+    private void setNextLevel(Level next) {
+        this.previous = this.current;
+        if (next != null) {
+            next.onReset();
+        }
+        this.current.onHide();
+        this.current = next;
+        this.current.onActive();
     }
 
     /**

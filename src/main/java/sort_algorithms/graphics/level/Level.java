@@ -4,12 +4,16 @@ package sort_algorithms.graphics.level;
 import KAGO_framework.view.DrawTool;
 import sort_algorithms.Wrapper;
 import sort_algorithms.graphics.ThemeColor;
+import sort_algorithms.graphics.level.impl.LevelBubbleSort;
+import sort_algorithms.graphics.level.impl.LevelQuickSort;
 import sort_algorithms.graphics.level.interaction.LevelInteractionElement;
+import sort_algorithms.graphics.level.interaction.impl.LevelButton;
 import sort_algorithms.graphics.tooltip.Tooltip;
 import sort_algorithms.model.KeyManagerModel;
 import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.model.sorting.impl.SortingAlgorithmVisualizer;
-import sort_algorithms.utils.misc.ColorObject;
+import sort_algorithms.model.transitions.DefaultTransition;
+import sort_algorithms.utils.math.MathUtils;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -30,14 +34,14 @@ public abstract class Level {
      * "Erstellt" quasi das Level, wird in der ganzen Runtime nur einmal ausgeführt
      * @param name
      */
-    protected Level(String name) {
+    protected Level(String name, ThemeColor theme) {
         this.name = name;
-        this.theme = ThemeColor.createDefault();
+        this.theme = theme;
         this.array = new int[] { 20, 3, 31, 17, 2, 6 }; // generateArray(0,20);
-        sorterHistory = sort(array);
-        double width = 600;
+        this.sorterHistory = sort(array);
+        double width = 900;
         double height = 400;
-        this.visualizer = new SortingAlgorithmVisualizer(sorterHistory, (Wrapper.getScreenWidth() - width) / 2, (Wrapper.getScreenHeight() - height) / 2, width, height, (ColorObject) this.theme.accent());
+        this.visualizer = new SortingAlgorithmVisualizer(this.sorterHistory, (Wrapper.getScreenWidth() - width) / 2, (Wrapper.getScreenHeight() - height) / 2, width, height, this.theme.accent());
         this.visualizer.processStep();
 
         Wrapper.getTooltipManager().register(
@@ -52,18 +56,41 @@ public abstract class Level {
                 }
             )
         );
-        Wrapper.getTooltipManager().register(
-            new Tooltip(
-                KeyManagerModel.KEY_PREVIOUS_ALG_STEP,
-                (keyManager) -> {
-                    LevelManager levelManager = Wrapper.getLevelManager();
-                    if (levelManager != null && levelManager.getCurrent() == this && this.visualizer.allowSkip()) {
-                        return "Vorheriger Schritt";
+
+        double buttonWidth = 320;
+        double buttonHeight = 50;
+        double buttonGap = 20;
+        double buttonY = 40;
+        double totalButtonWidth = buttonWidth * 4 + buttonGap * 3;
+        double startX = (Wrapper.getScreenWidth() - totalButtonWidth) / 2;
+
+        new LevelButton(this, "Quick Sort", startX, buttonY, buttonWidth, buttonHeight, 24, theme.accent())
+                .onClick((btn) -> {
+                    if (!this.name.equals(btn.getText())) {
+                        Wrapper.getLevelManager().nextLevel(new LevelQuickSort(), "bb1", null, new DefaultTransition());
                     }
-                    return null;
-                }
-            )
-        );
+                });
+
+        new LevelButton(this, "Selection Sort", startX + buttonWidth + buttonGap, buttonY, buttonWidth, buttonHeight, 24, theme.accent())
+                .onClick((btn) -> {
+                    if (!this.name.equals(btn.getText())) {
+                        Wrapper.getLevelManager().nextLevel(new LevelBubbleSort(), "bb2", null, new DefaultTransition());
+                    }
+                });
+
+        new LevelButton(this, "Insertion Sort", startX + (buttonWidth + buttonGap) * 2, buttonY, buttonWidth, buttonHeight, 24, theme.accent())
+                .onClick((btn) -> {
+                    if (!this.name.equals(btn.getText())) {
+                        Wrapper.getLevelManager().nextLevel(new LevelBubbleSort(), "bb3", null, new DefaultTransition());
+                    }
+                });
+
+        new LevelButton(this, "Bubble Sort", startX + (buttonWidth + buttonGap) * 3, buttonY, buttonWidth, buttonHeight, 24, theme.accent())
+                .onClick((btn) -> {
+                    if (!this.name.equals(btn.getText())) {
+                        Wrapper.getLevelManager().nextLevel(new LevelBubbleSort(), "bb4", null, new DefaultTransition());
+                    }
+                });
     }
 
     /***
@@ -80,7 +107,14 @@ public abstract class Level {
     /***
      * Wenn Level zurückgesetzt werden soll
      */
-    public abstract void onReset();
+    public void onReset() {
+        this.array = generateArray(0, 100, MathUtils.random(6, 10));
+        this.sorterHistory = sort(array);
+        double width = 900;
+        double height = 400;
+        this.visualizer = new SortingAlgorithmVisualizer(sorterHistory, (Wrapper.getScreenWidth() - width) / 2, (Wrapper.getScreenHeight() - height) / 2, width, height, this.theme.accent());
+        this.visualizer.processStep();
+    }
 
     public abstract void update(double dt);
     public abstract void draw(DrawTool drawTool);
@@ -95,6 +129,14 @@ public abstract class Level {
         int[] array = new int[max - min + 1];
         for (int i = 0; i < array.length; i++) {
             array[i] = min + i;
+        }
+        return array;
+    }
+
+    protected int[] generateArray(int minValue, int maxValue, int length) {
+        int[] array = new int[length];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = minValue + (int) (Math.random() * (maxValue - minValue + 1));
         }
         return array;
     }
@@ -135,9 +177,6 @@ public abstract class Level {
 
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             this.sorterHistory.stepBack(this.visualizer);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_1) {
-            Wrapper.getLevelManager().nextLevel("dfsfgdf");
         }
     }
     public void keyReleased(KeyEvent e) {}
