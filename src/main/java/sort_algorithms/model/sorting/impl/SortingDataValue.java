@@ -129,6 +129,7 @@ public class SortingDataValue {
     public double getHeight() {
         return this.height;
     }
+
     public static void setAnimationDuration(double ad) {
         animationDuration = ad;
     }

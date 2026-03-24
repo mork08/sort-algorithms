@@ -19,7 +19,9 @@ public class LevelSelectionSort extends Level {
     public void onHide() {}
 
     @Override
-    public void update(double dt) {autoplay();}
+    public void update(double dt) {
+        autoplay();
+    }
 
     @Override
     public void draw(DrawTool drawTool) {

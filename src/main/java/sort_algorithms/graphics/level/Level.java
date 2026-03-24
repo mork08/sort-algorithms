@@ -196,19 +196,17 @@ public abstract class Level {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             this.sorterHistory.stepForward(this.visualizer);
 
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            // this.sorterHistory.stepBack(this.visualizer);
-
-        }else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            autoplayActive = !autoplayActive;
-            if (autoplayActive) {
-                visualizer.setAnimationDuration(0.4);
-            }else{
-                visualizer.setAnimationDuration(1.0);
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            this.autoplayActive = !this.autoplayActive;
+            if (this.autoplayActive) {
+                this.visualizer.setAnimationDuration(0.4);
+            } else {
+                this.visualizer.setAnimationDuration(1.0);
             }
         }
     }
     public void keyReleased(KeyEvent e) {}
+
     protected void autoplay(){
         if(!autoplayActive) return;
         this.sorterHistory.stepForward(this.visualizer);

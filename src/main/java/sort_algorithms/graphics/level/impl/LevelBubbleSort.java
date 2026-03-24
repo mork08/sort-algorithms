@@ -8,7 +8,6 @@ import sort_algorithms.utils.misc.ColorObject;
 
 public class LevelBubbleSort extends Level {
 
-
     public LevelBubbleSort() {
         super("Bubble Sort", new ThemeColor(ColorObject.ORANGE, ColorObject.RED, ColorObject.of("#4d222c")));
     }
@@ -20,7 +19,9 @@ public class LevelBubbleSort extends Level {
     public void onHide() {}
 
     @Override
-    public void update(double dt) {autoplay();}
+    public void update(double dt) {
+        autoplay();
+    }
 
     @Override
     public void draw(DrawTool drawTool) {
