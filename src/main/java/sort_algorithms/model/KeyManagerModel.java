@@ -8,7 +8,7 @@ import java.io.IOException;
 public class KeyManagerModel {
 
     public static KeyManagerModel KEY_NEXT_ALG_STEP = new KeyManagerModel(KeyEvent.VK_RIGHT, "Nächster Schritt");
-    public static KeyManagerModel KEY_PREVIOUS_ALG_STEP = new KeyManagerModel(KeyEvent.VK_LEFT, "Vorheriger Schritt");
+    public static KeyManagerModel KEY_AUTOPLAY = new KeyManagerModel(KeyEvent.VK_SPACE, "Autoplay an/aus");
 
     private final int key;
     private final String description;
@@ -20,7 +20,7 @@ public class KeyManagerModel {
         try {
             String filename = KeyEvent.getKeyText(this.key).toUpperCase();
             switch (this.key) {
-                case KeyEvent.VK_SPACE -> filename = "SPACE";
+                case KeyEvent.VK_SPACE -> filename = "SPACEALTERNATIVE";
                 case KeyEvent.VK_CONTROL -> filename = "CTRL";
                 case KeyEvent.VK_ENTER -> filename = "ENTER";
                 case KeyEvent.VK_LEFT -> filename = "ARROWLEFT";

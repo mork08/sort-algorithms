@@ -8,10 +8,8 @@ import sort_algorithms.utils.misc.ColorObject;
 
 public class LevelSelectionSort extends Level {
 
-
     public LevelSelectionSort() {
-        super("Selection Sort");
-        this.theme = new ThemeColor(ColorObject.ORANGE, ColorObject.RED);
+        super("Selection Sort", new ThemeColor(ColorObject.ORANGE, ColorObject.RED, ColorObject.of("#4d222c")));
     }
 
     @Override
@@ -19,9 +17,6 @@ public class LevelSelectionSort extends Level {
 
     @Override
     public void onHide() {}
-
-    @Override
-    public void onReset() {}
 
     @Override
     public void update(double dt) {autoplay();}

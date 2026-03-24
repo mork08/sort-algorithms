@@ -20,9 +20,6 @@ public class LevelBubbleSort extends Level {
     public void onHide() {}
 
     @Override
-    public void onReset() {}
-
-    @Override
     public void update(double dt) {autoplay();}
 
     @Override

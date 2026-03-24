@@ -12,8 +12,7 @@ public class LevelInsertionSort extends Level {
 
 
     public LevelInsertionSort() {
-        super("Insertion Sort");
-        this.theme = new ThemeColor(new Color(51, 15, 134), new Color(150, 33, 166));
+        super("Insertion Sort", new ThemeColor(new Color(51, 15, 134), new Color(150, 33, 166), ColorObject.of("#3a224d")));
     }
 
     @Override
@@ -21,9 +20,6 @@ public class LevelInsertionSort extends Level {
 
     @Override
     public void onHide() {}
-
-    @Override
-    public void onReset() {}
 
     @Override
     public void update(double dt) {autoplay();}
