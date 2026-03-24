@@ -144,8 +144,10 @@ public abstract class Level {
                 visualizer.setAnimationDuration(1.0);
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_1) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
             Wrapper.getLevelManager().nextLevel("dfsfgdf");
+        }else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            Wrapper.getLevelManager().previousLevel("dfsfgdf");
         }
     }
     public void keyReleased(KeyEvent e) {}
