@@ -17,6 +17,7 @@ public class SortingDataValue {
     private double width;
     private double height;
     private final Color color;
+    private static double animationDuration = 1.0;
 
     private boolean marked;
 
@@ -65,10 +66,9 @@ public class SortingDataValue {
         double startX = this.x;
         double startY = this.y;
         double middleY = startY + yOff;
-        double duration = 1.0;
-        this.MOVEMENT_Y.redo(startY, middleY, duration).onFinish((o) -> {
-            this.MOVEMENT_X.redo(startX, x, duration).onFinish((_o) -> {
-                this.MOVEMENT_Y.redo(middleY, startY, duration).onFinish(null).animate();
+        this.MOVEMENT_Y.redo(startY, middleY, animationDuration).onFinish((o) -> {
+            this.MOVEMENT_X.redo(startX, x, animationDuration).onFinish((_o) -> {
+                this.MOVEMENT_Y.redo(middleY, startY, animationDuration).onFinish(null).animate();
             }).animate();
         }).animate();
     }
@@ -128,5 +128,8 @@ public class SortingDataValue {
 
     public double getHeight() {
         return this.height;
+    }
+    public static void setAnimationDuration(double ad) {
+        animationDuration = ad;
     }
 }

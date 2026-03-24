@@ -180,6 +180,11 @@ public abstract class Level {
             this.sorterHistory.stepBack(this.visualizer);
         }else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             autoplayActive = !autoplayActive;
+            if (autoplayActive) {
+                visualizer.setAnimationDuration(0.4);
+            }else{
+                visualizer.setAnimationDuration(1.0);
+            }
         }
     }
     public void keyReleased(KeyEvent e) {}
