@@ -6,12 +6,14 @@ import sort_algorithms.graphics.level.Level;
 import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.utils.misc.ColorObject;
 
+import java.awt.*;
+
 public class LevelInsertionSort extends Level {
 
 
     public LevelInsertionSort() {
         super("Insertion Sort");
-        this.theme = new ThemeColor(ColorObject.ORANGE, ColorObject.RED);
+        this.theme = new ThemeColor(new Color(51, 15, 134), new Color(150, 33, 166));
     }
 
     @Override
