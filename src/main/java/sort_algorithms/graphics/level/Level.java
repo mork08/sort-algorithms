@@ -10,13 +10,13 @@ import sort_algorithms.graphics.level.interaction.impl.LevelButton;
 import sort_algorithms.graphics.tooltip.Tooltip;
 import sort_algorithms.model.KeyManagerModel;
 import sort_algorithms.model.sorting.SorterHistory;
+import sort_algorithms.model.sorting.SortingDirection;
 import sort_algorithms.model.sorting.impl.SortingAlgorithmVisualizer;
 import sort_algorithms.model.transitions.DefaultTransition;
 import sort_algorithms.utils.math.MathUtils;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,19 +42,34 @@ public abstract class Level {
         this.sorterHistory = sort(array);
         double width = 900;
         double height = 400;
-        this.visualizer = new SortingAlgorithmVisualizer(this.sorterHistory, (Wrapper.getScreenWidth() - width) / 2, (Wrapper.getScreenHeight() - height) / 2, width, height, this.theme.accent());
-        this.visualizer.processStep();
+        this.visualizer = new SortingAlgorithmVisualizer(this.sorterHistory, (Wrapper.getScreenWidth() - width) / 2, (Wrapper.getScreenHeight() - height) / 2, width, height, this.theme);
+        this.visualizer.processStep(SortingDirection.FORWARD);
+
+        Wrapper.getTooltipManager().register(
+                new Tooltip(
+                        KeyManagerModel.KEY_NEXT_ALG_STEP,
+                        (keyManager) -> {
+                            LevelManager levelManager = Wrapper.getLevelManager();
+                            if (levelManager != null && levelManager.getCurrent() == this && this.visualizer.allowSkip() && this.sorterHistory.getCurrentIndex() < this.sorterHistory.getSteps() - 1) {
+                                return "Nächster Schritt";
+                            }
+                            return null;
+                        },
+                        theme
+                )
+        );
 
         Wrapper.getTooltipManager().register(
             new Tooltip(
-                KeyManagerModel.KEY_NEXT_ALG_STEP,
+                KeyManagerModel.KEY_PREVIOUS_ALG_STEP,
                 (keyManager) -> {
                     LevelManager levelManager = Wrapper.getLevelManager();
-                    if (levelManager != null && levelManager.getCurrent() == this && this.visualizer.allowSkip()) {
-                        return "Nächster Schritt";
+                    if (levelManager != null && levelManager.getCurrent() == this && this.visualizer.allowSkip() && this.sorterHistory.getCurrentIndex() > 0) {
+                        return "Vorheriger Schritt";
                     }
                     return null;
-                }
+                },
+                theme
             )
         );
 
@@ -73,7 +88,8 @@ public abstract class Level {
                             }
                         }
                         return null;
-                    }
+                    },
+                    theme
                 )
             );
         }
@@ -151,12 +167,16 @@ public abstract class Level {
         this.sorterHistory = sort(array);
         double width = 900;
         double height = 400;
-        this.visualizer = new SortingAlgorithmVisualizer(sorterHistory, (Wrapper.getScreenWidth() - width) / 2, (Wrapper.getScreenHeight() - height) / 2, width, height, this.theme.accent());
-        this.visualizer.processStep();
+        this.visualizer = new SortingAlgorithmVisualizer(sorterHistory, (Wrapper.getScreenWidth() - width) / 2, (Wrapper.getScreenHeight() - height) / 2, width, height, this.theme);
+        this.visualizer.processStep(SortingDirection.FORWARD);
     }
 
-    public abstract void update(double dt);
-    public abstract void draw(DrawTool drawTool);
+    public void update(double dt) {
+        this.autoplay();
+    }
+    public void draw(DrawTool drawTool) {
+        this.visualizer.draw(drawTool);
+    }
     protected abstract SorterHistory sort(int[] array);
     public void drawAfterObjects(DrawTool drawTool) {}
 
@@ -214,19 +234,27 @@ public abstract class Level {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             this.sorterHistory.stepForward(this.visualizer);
 
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            this.sorterHistory.stepBack(this.visualizer);
+
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE && !(this instanceof LevelBinarySearch || this instanceof LevelLinearSearch)) {
-            this.autoplayActive = !this.autoplayActive;
-            if (this.autoplayActive) {
-                this.visualizer.setAnimationDuration(0.4);
-            } else {
-                this.visualizer.setAnimationDuration(1.0);
-            }
+            this.toggleAutoplay(!this.autoplayActive);
         }
     }
     public void keyReleased(KeyEvent e) {}
 
+    private void toggleAutoplay(boolean flag) {
+        this.autoplayActive = flag;
+        if (this.autoplayActive) {
+            this.visualizer.setAnimationDuration(0.4);
+
+        } else {
+            this.visualizer.setAnimationDuration(1.0);
+        }
+    }
+
     protected void autoplay(){
-        if(!autoplayActive) return;
-        this.sorterHistory.stepForward(this.visualizer);
+        if(!this.autoplayActive) return;
+        if (this.sorterHistory.stepForward(this.visualizer) == 2) this.toggleAutoplay(false);
     }
 }

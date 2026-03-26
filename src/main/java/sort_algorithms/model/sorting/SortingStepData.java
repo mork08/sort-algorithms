@@ -1,4 +1,4 @@
 package sort_algorithms.model.sorting;
 
-public record SortingStepData(int[] array, int index1, int index2) {
+public record SortingStepData(int[] array, int index1, int index2, int comparisions, int assignments) {
 }

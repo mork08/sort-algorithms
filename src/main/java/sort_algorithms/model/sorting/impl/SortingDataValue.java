@@ -17,7 +17,8 @@ public class SortingDataValue {
     private double width;
     private double height;
     private final Color color;
-    private static double animationDuration = 1.0;
+    private double animationDuration = 1.0;
+    private Runnable onFinish;
 
     private boolean marked;
 
@@ -50,6 +51,10 @@ public class SortingDataValue {
         }
     }
 
+    public void onFinish(Runnable runnable) {
+        this.onFinish = runnable;
+    }
+
     public void processCompare() {
         this.mark();
     }
@@ -68,7 +73,9 @@ public class SortingDataValue {
         double middleY = startY + yOff;
         this.MOVEMENT_Y.redo(startY, middleY, animationDuration).onFinish((o) -> {
             this.MOVEMENT_X.redo(startX, x, animationDuration).onFinish((_o) -> {
-                this.MOVEMENT_Y.redo(middleY, startY, animationDuration).onFinish(null).animate();
+                this.MOVEMENT_Y.redo(middleY, startY, animationDuration).onFinish((__o) -> {
+                    if (this.onFinish != null) this.onFinish.run();
+                }).animate();
             }).animate();
         }).animate();
     }
@@ -82,7 +89,7 @@ public class SortingDataValue {
     public void draw(DrawTool drawTool) {
         drawTool.push();
 
-        drawTool.setCurrentColor(this.color);
+        drawTool.setCurrentColor(this.marked ? ColorObject.of(this.color).invert().dark() : this.color);
         drawTool.drawFilledRectangle(this.x, this.y, this.width, this.height);
 
         if (this.marked) {
@@ -130,7 +137,7 @@ public class SortingDataValue {
         return this.height;
     }
 
-    public static void setAnimationDuration(double ad) {
-        animationDuration = ad;
+    public void setAnimationDuration(double ad) {
+        this.animationDuration = ad;
     }
 }

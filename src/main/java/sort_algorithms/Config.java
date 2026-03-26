@@ -17,7 +17,7 @@ public class Config {
     public static int NUM_BUFFERS = 2;
 
     public final static Environment RUN_ENV = Environment.PRODUCTION;
-    public final static boolean DEBUG = true;
+    public final static boolean DEBUG = false;
 
     // Weitere Optionen für das Projekt
     public final static boolean USE_SOUND = true;

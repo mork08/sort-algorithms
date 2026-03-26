@@ -8,6 +8,7 @@ import java.io.IOException;
 public class KeyManagerModel {
 
     public static KeyManagerModel KEY_NEXT_ALG_STEP = new KeyManagerModel(KeyEvent.VK_RIGHT, "Nächster Schritt");
+    public static KeyManagerModel KEY_PREVIOUS_ALG_STEP = new KeyManagerModel(KeyEvent.VK_LEFT, "Vorheriger Schritt");
     public static KeyManagerModel KEY_AUTOPLAY = new KeyManagerModel(KeyEvent.VK_SPACE, "Autoplay an/aus");
 
     private final int key;

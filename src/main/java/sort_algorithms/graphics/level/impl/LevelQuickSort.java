@@ -1,16 +1,11 @@
 package sort_algorithms.graphics.level.impl;
 
-import KAGO_framework.view.DrawTool;
 import sort_algorithms.graphics.ThemeColor;
 import sort_algorithms.graphics.level.Level;
 import sort_algorithms.model.sorting.SorterHistory;
 import sort_algorithms.utils.misc.ColorObject;
 
-import java.awt.*;
-
 public class LevelQuickSort extends Level {
-    private double timer = 0.0;
-    private double cooldown = 0.3;
 
     public LevelQuickSort() {
         super("Quick Sort", new ThemeColor(ColorObject.of("#6f13e8"), ColorObject.of("#617eff"), ColorObject.of("#3a224d")));
@@ -21,16 +16,6 @@ public class LevelQuickSort extends Level {
 
     @Override
     public void onHide() {}
-
-    @Override
-    public void update(double dt) {
-        autoplay();
-    }
-
-    @Override
-    public void draw(DrawTool drawTool) {
-        this.visualizer.draw(drawTool);
-    }
 
     @Override
     protected SorterHistory sort(int[] array) {
@@ -45,25 +30,38 @@ public class LevelQuickSort extends Level {
     }
 
     private void quickSort(int[] array, int low, int high, SorterHistory sorterHistory) {
+        sorterHistory.comparision(1);
         if (low >= high) {
             return;
         }
 
+        sorterHistory.assignment(1);
         int pivotIndex = this.partition(array, low, high, sorterHistory);
         this.quickSort(array, low, pivotIndex - 1, sorterHistory);
         this.quickSort(array, pivotIndex + 1, high, sorterHistory);
     }
 
     private int partition(int[] array, int low, int high, SorterHistory sorterHistory) {
+        sorterHistory.assignment(2);
         int pivot = array[high];
         int i = low - 1;
 
+        // j = low
+        sorterHistory.assignment(1);
         for (int j = low; j < high; j++) {
+            // j < high
+            sorterHistory.comparision(1);
+
             sorterHistory.comparePlaces(j, high, "vergleiche %d mit dem Pivot %d");
+
+            sorterHistory.comparision(1);
             if (array[j] <= pivot) {
+                sorterHistory.assignment(1);
                 i++;
+
+                sorterHistory.comparision(1);
                 if (i != j) {
-                    this.swap(array, i, j);
+                    this.swap(array, i, j, sorterHistory);
                     sorterHistory.switchPlaces(i, j, "%d wird vor das Pivot %d verschoben");
                 } else {
                     sorterHistory.noSwitch(j, high, "%d ist kleiner/gleich dem Pivot %d und bleibt an seiner Position");
@@ -71,11 +69,19 @@ public class LevelQuickSort extends Level {
             } else {
                 sorterHistory.noSwitch(j, high, "%d ist größer als das Pivot %d und bleibt rechts");
             }
-        }
 
+            // j++
+            sorterHistory.assignment(1);
+        }
+        // Letzter Vergleich for-schleife
+        sorterHistory.comparision(1);
+
+        sorterHistory.assignment(1);
         int pivotTargetIndex = i + 1;
+
+        sorterHistory.comparision(1);
         if (pivotTargetIndex != high) {
-            this.swap(array, pivotTargetIndex, high);
+            this.swap(array, pivotTargetIndex, high, sorterHistory);
             sorterHistory.switchPlaces(pivotTargetIndex, high, "das Pivot %d wird an seine endgueltige Position getauscht");
         } else {
             sorterHistory.noSwitch(high, high, "das Pivot %d ist bereits an der richtigen Position");
@@ -83,7 +89,9 @@ public class LevelQuickSort extends Level {
         return pivotTargetIndex;
     }
 
-    private void swap(int[] array, int index1, int index2) {
+    private void swap(int[] array, int index1, int index2, SorterHistory sorterHistory) {
+        sorterHistory.assignment(3);
+
         int temp = array[index1];
         array[index1] = array[index2];
         array[index2] = temp;

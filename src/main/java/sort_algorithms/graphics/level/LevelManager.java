@@ -4,6 +4,7 @@ import KAGO_framework.model.abitur.datenstrukturen.Queue;
 import KAGO_framework.view.DrawTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sort_algorithms.graphics.level.impl.LevelQuickSort;
 import sort_algorithms.model.scene.Scene;
 import sort_algorithms.model.scene.impl.GameScene;
 import sort_algorithms.model.transitions.DefaultTransition;
@@ -107,7 +108,7 @@ public class LevelManager {
             }
 
             if (this.levels.size() > 0) {
-                this.current = this.levels.getFirst();
+                this.current = this.levels.stream().filter(it -> it instanceof LevelQuickSort).findFirst().get();
             }
 
             if (this.levels.size() > 1) {

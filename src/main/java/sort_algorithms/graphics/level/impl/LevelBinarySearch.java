@@ -1,6 +1,5 @@
 package sort_algorithms.graphics.level.impl;
 
-import KAGO_framework.view.DrawTool;
 import sort_algorithms.graphics.ThemeColor;
 import sort_algorithms.graphics.level.Level;
 import sort_algorithms.model.sorting.SorterHistory;
@@ -24,16 +23,6 @@ public class LevelBinarySearch extends Level {
     public void onHide() {}
 
     @Override
-    public void update(double dt) {
-        autoplay();
-    }
-
-    @Override
-    public void draw(DrawTool drawTool) {
-        this.visualizer.draw(drawTool);
-    }
-
-    @Override
     protected SorterHistory sort(int[] array) {
         array = generateArray(0, 100, 10);
         Arrays.sort(array);
@@ -41,34 +30,58 @@ public class LevelBinarySearch extends Level {
         SorterHistory sorterHistory = new SorterHistory("Binary Search", array);
         System.arraycopy(array, 0, arrayCopy, 0, array.length);
 
+        sorterHistory.assignment(1);
         int indexTarget = arrayCopy.length - 1;
+
+        sorterHistory.assignment(1);
         this.target = arrayCopy[indexTarget];
 
+        sorterHistory.assignment(3);
         int left = 0;
         int right = arrayCopy.length - 1;
         boolean found = false;
 
-        while (left <= right) {
+        while (true) {
+            sorterHistory.comparision(1);
+            if (!(left <= right)) {
+                break;
+            }
+
+            sorterHistory.assignment(1);
             int mid = left + (right - left) / 2;
+
             sorterHistory.comparePlaces(mid, indexTarget, "vergleiche %d mit der gesuchten Zahl %d");
 
+            sorterHistory.comparision(1);
             if (arrayCopy[mid] == this.target) {
                 sorterHistory.finish("Gesuchte Zahl (" + this.target + ") wurde gefunden");
+
+                sorterHistory.assignment(1);
                 found = true;
                 break;
 
-            } else if (arrayCopy[mid] < this.target) {
-                sorterHistory.noSwitch(mid, indexTarget, "%d ist kleiner als die gesuchte Zahl (%d), suche rechts weiter");
-                left = mid + 1;
-
             } else {
-                sorterHistory.noSwitch(mid, indexTarget, "%d ist groesser als die gesuchte Zahl (%d), suche links weiter");
-                right = mid - 1;
+                sorterHistory.comparision(1);
+                if (arrayCopy[mid] < this.target) {
+                    sorterHistory.noSwitch(mid, indexTarget, "%d ist kleiner als die gesuchte Zahl (%d), suche rechts weiter");
+
+                    sorterHistory.assignment(1);
+                    left = mid + 1;
+
+                } else {
+                    sorterHistory.noSwitch(mid, indexTarget, "%d ist groesser als die gesuchte Zahl (%d), suche links weiter");
+
+                    sorterHistory.assignment(1);
+                    right = mid - 1;
+                }
             }
         }
+
+        sorterHistory.comparision(1);
         if (!found) {
             sorterHistory.finish("Gesuchte Zahl (" + this.target + ") wurde nicht gefunden");
         }
+
         return sorterHistory;
     }
 }

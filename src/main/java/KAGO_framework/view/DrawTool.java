@@ -423,6 +423,46 @@ public class DrawTool {
         }
     }
 
+    public void drawCenteredTextOutline(String text, double x, double y, double width, Color color, double outlineWidth, Color outline) {
+        this.drawCenteredTextOutline(text, x, y, width, color, outlineWidth, outline, true);
+    }
+
+    public void drawCenteredTextOutline(String text, double x, double y, double width, Color color, double outlineWidth, Color outline, boolean pixelated) {
+        if (this.frameworkGraphics != null) {
+            var font = frameworkGraphics.getGraphics2D().getFont();
+            AttributedString as = new AttributedString(text.replace(" ", "  "));
+            as.addAttribute(TextAttribute.FONT, font);
+            as.addAttribute(TextAttribute.TRACKING, outlineWidth + 2.0);
+            as.addAttribute(TextAttribute.KERNING, TextAttribute.KERNING_ON);
+            this.push();
+            if (pixelated) {
+                frameworkGraphics.getGraphics2D().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+
+            } else {
+                frameworkGraphics.getGraphics2D().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            }
+
+            // 2. Font und FontRenderContext holen
+            frameworkGraphics.getGraphics2D().setFont(font);
+            FontRenderContext frc = frameworkGraphics.getGraphics2D().getFontRenderContext();
+
+            // 3. Text in ein Shape umwandeln
+            GlyphVector gv = font.createGlyphVector(frc, as.getIterator());
+            FontMetrics metrics = frameworkGraphics.getGraphics2D().getFontMetrics(font);
+            double textX = x + (width - metrics.stringWidth(text)) / 2;
+            double textY = y + metrics.getAscent();
+            Shape textShape = gv.getOutline((float) textX, (float) textY);
+
+            frameworkGraphics.getGraphics2D().setColor(outline);
+            frameworkGraphics.getGraphics2D().setStroke(new BasicStroke((float) outlineWidth)); // Dicke der Kontur
+            frameworkGraphics.getGraphics2D().draw(textShape);
+
+            frameworkGraphics.getGraphics2D().setColor(color);
+            frameworkGraphics.getGraphics2D().fill(textShape);
+            this.pop();
+        }
+    }
+
     public void drawCenteredTextOutline(String text, double x, double y, double width, double height, Color color, double outlineWidth, Color outline) {
         this.drawCenteredTextOutline(text, x, y, width, height, color, outlineWidth, outline, true);
     }
@@ -566,6 +606,10 @@ public class DrawTool {
 
     public double getFontHeight(Font font) {
         return frameworkGraphics.getGraphics2D().getFontMetrics(font).getDescent();
+    }
+
+    public double getFontAscent() {
+        return frameworkGraphics.getGraphics2D().getFontMetrics(frameworkGraphics.getGraphics2D().getFont()).getAscent();
     }
 
     public void setGraphics2D(Graphics2D g2d){

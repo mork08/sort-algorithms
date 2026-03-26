@@ -4,7 +4,9 @@ import KAGO_framework.view.DrawTool;
 import sort_algorithms.Wrapper;
 import sort_algorithms.animation.Easings;
 import sort_algorithms.animation.tween.Tween;
+import sort_algorithms.graphics.ThemeColor;
 import sort_algorithms.model.KeyManagerModel;
+import sort_algorithms.utils.misc.ColorObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -24,12 +26,12 @@ public class Tooltip {
     private final Font TOOLTIP_FONT;
     private double TOOLTIP_TWEEN_DURATION = 1.6;
     private double TOOLTIP_TWEEN_POSITION_START;
-    private Color TOOLTIP_TEXT_COLOR = Color.decode("#b29f99");
-    private Color TOOLTIP_OUTLINE_COLOR = Color.decode("#554544");
+    private Color TOOLTIP_TEXT_COLOR;
+    private Color TOOLTIP_OUTLINE_COLOR;
     private Tween TOOLTIP_TWEEN_POSITION_X;
     private Tween TOOLTIP_TWEEN_POSITION_Y;
 
-    public Tooltip(KeyManagerModel keyModel, Function<KeyManagerModel, String> function) {
+    public Tooltip(KeyManagerModel keyModel, Function<KeyManagerModel, String> function, ThemeColor theme) {
         this.keyModel = keyModel;
         this.function = function;
         this.textCache = function.apply(this.keyModel) != null ? function.apply(this.keyModel).toUpperCase().replace(" ", "  ") : "";
@@ -43,15 +45,16 @@ public class Tooltip {
         this.TOOLTIP_TWEEN_POSITION_X =
                 Tween.to(20.0, 20.0, this.TOOLTIP_TWEEN_DURATION / 4)
                         .ease((x) -> Easings.easeOutCubic(x))
-                        .delay(Wrapper.getTooltipManager().getTooltips().size() * 0.3)
                         .loop(false);
         this.TOOLTIP_TWEEN_POSITION_Y =
                 Tween.to(this.TOOLTIP_TWEEN_POSITION_START, 0.0, this.TOOLTIP_TWEEN_DURATION)
                         .ease((x) -> Easings.easeOutElastic(x))
-                        .delay(Wrapper.getTooltipManager().getTooltips().size() * 0.3 + this.TOOLTIP_TWEEN_DURATION)
                         .loop(false);
 
         if (this.showTooltip()) this.TOOLTIP_TWEEN_POSITION_Y.animate();
+
+        this.TOOLTIP_TEXT_COLOR = ColorObject.of(theme.background()).bright().bright().bright();
+        this.TOOLTIP_OUTLINE_COLOR = ColorObject.of(theme.background()).dark();
     }
 
     public KeyManagerModel getKeyModel() {
